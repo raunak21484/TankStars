@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class TankStars extends ApplicationAdapter {
-	SpriteBatch batch;//
+	SpriteBatch batch;
 	Texture img;
 	
 	@Override
