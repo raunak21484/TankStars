@@ -29,6 +29,7 @@ public class TankStars extends ApplicationAdapter {
 		currStage = LOADING_SCREEN;
 		Gdx.input.setInputProcessor(stages.get(currStage));
 		Image img = new Image(new Sprite(new Texture(Gdx.files.internal("MainMenu/loadingscreen.png"))));
+		img.setSize(1920,887);
 		stages.get(currStage).addActor(img);
 
 	}
@@ -37,9 +38,6 @@ public class TankStars extends ApplicationAdapter {
 	public void render () {
 		stages.get(currStage).act(Gdx.graphics.getDeltaTime());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Actor tImg = stages.get(currStage).getActors().first();
-		tImg.setSize(1920,887);
-		tImg.setColor(tImg.getColor().r,tImg.getColor().g,tImg.getColor().b,tImg.getColor().a-0.002f);
 		stages.get(currStage).draw();
 	}
 	
