@@ -25,7 +25,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 	private final int MAIN_MENU = 1;
 	private final int LOADING_SCREEN = 0;
-	private int currStage;
+	private Integer currStage;
 	StageCreator stageCreator;
 	private ArrayList<Stage> stages;
 	private Boolean bool;
