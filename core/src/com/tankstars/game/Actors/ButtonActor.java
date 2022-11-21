@@ -28,9 +28,6 @@ public class ButtonActor extends Image {
     public void performAction(){
         this.addAction(action);
        action.reset();
-       this.addAction(action);
-       this.addAction(action);
-       this.addAction(action);
 
     }
     @Override
