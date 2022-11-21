@@ -94,7 +94,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-		return false;
+		return false;//
 	}
 
 	@Override
