@@ -36,6 +36,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	public void create () {
 		mux	= new InputMultiplexer();
 		mux.addProcessor(this);
+		mux.addProcessor(this);
 		stageCreator = new StageCreator();
 		stages = new ArrayList<>();
 		stages.add(stageCreator.initLoadingScreen(mux));
