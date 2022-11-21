@@ -10,21 +10,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class ButtonActor extends Image {
+    Action action;
     Texture texture;
-    Sound sound;
-    long id;
     boolean isPressed = false;
     public ButtonActor(String path, int width, int height, int x, int y){
         super(new Texture(Gdx.files.internal(path)));
         this.setX(x);this.setY(y);this.setWidth(width);
         setBounds(x,y,width,height);
         setTouchable(Touchable.enabled);
-        sound = Gdx.audio.newSound(Gdx.files.internal("tempsound1.mp3"));
-
-
     }
-    public void Hit(Action action){
-        this.addAction(action);
+    public void setAction(Action action){
+        this.action = action;
+    }
+    public Action getButtonAction(){
+        return this.action;
     }
     @Override
     public void draw(Batch batch, float parentAlpha){

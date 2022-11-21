@@ -102,7 +102,8 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		coord = this.stages.get(currStage).screenToStageCoordinates(new Vector2((float) screenX, (float) screenY));
 		Actor hitActor = this.stages.get(currStage).hit(coord.x, coord.y, false);
 		if(hitActor instanceof ButtonActor){
-
+			ButtonActor button1 = (ButtonActor) hitActor;
+			button1.setAction(button1.getButtonAction());
 		}
 		return false;
 	}
