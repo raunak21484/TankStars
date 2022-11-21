@@ -46,7 +46,10 @@ public class TankStars extends ApplicationAdapter {
 	public void render () {
 		stages.get(currStage).act(Gdx.graphics.getDeltaTime());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		stages.get(currStage).act(Gdx.graphics.getDeltaTime());
 		stages.get(currStage).draw();
+
+
 		switch(currStage){
 			case LOADING_SCREEN:
 				if(bool){

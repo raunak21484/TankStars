@@ -1,6 +1,7 @@
 package com.tankstars.game.Actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -21,12 +22,22 @@ public class Logo extends Image {
         addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(!isPressed){
-                    isPressed = true;
-                    id = sound.play();
+                if(button == Input.Buttons.LEFT) {
+                    if (!isPressed) {
+                        isPressed = true;
+                        id = sound.play();
 
+                    }
                 }
                 return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if(button == Input.Buttons.LEFT) {
+                    isPressed = false;
+                }
+                super.touchUp(event, x, y, pointer, button);
             }
         });
     }
