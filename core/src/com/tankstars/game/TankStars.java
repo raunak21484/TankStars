@@ -42,7 +42,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		stages.add(stageCreator.initLoadingScreen(mux));
 		currStage = LOADING_SCREEN;
 		bool = false;
-		Gdx.input.setInputProcessor(this);
+		Gdx.input.setInputProcessor(mux);
 		Timer.schedule(new Timer.Task(){
 			@Override
 			public void run(){
