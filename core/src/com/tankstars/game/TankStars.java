@@ -24,8 +24,10 @@ import java.util.ArrayList;
 
 public class TankStars extends ApplicationAdapter implements InputProcessor {
 
-	public static final int MAIN_MENU = 1;
 	public static final int LOADING_SCREEN = 0;
+	public static final int MAIN_MENU = 1;
+	public static final int SELECTION_SCREEN = 2;
+
 	private MutableInt currStage;
 	StageCreator stageCreator;
 	private ArrayList<Stage> stages;
@@ -38,10 +40,12 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		mux	= new InputMultiplexer();
 		mux.addProcessor(this);
 		mux.addProcessor(this);
-		stageCreator = new StageCreator();
+		currStage= new MutableInt(LOADING_SCREEN);
+		stageCreator = new StageCreator(currStage);
 		stages = new ArrayList<>();
 		stages.add(stageCreator.initLoadingScreen(mux));
-		currStage= new MutableInt(LOADING_SCREEN);
+		stages.add(stageCreator.initMainMenu(mux));
+		stages.add(stageCreator.initSelectionScreen(mux));
 		bool = false;
 		Gdx.input.setInputProcessor(mux);
 		Timer.schedule(new Timer.Task(){
@@ -66,13 +70,14 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 					tempActor =stages.get(currStage.val).getActors().first();
 					tempActor.setColor(tempActor.getColor().r,tempActor.getColor().g,tempActor.getColor().b,tempActor.getColor().a-0.05f);
 					if(tempActor.getColor().a<=0){
-						stages.add(stageCreator.initMainMenu(mux));
 						currStage.val = MAIN_MENU;
 					}
 				}
 				break;
 			case MAIN_MENU:
 
+				break;
+			case SELECTION_SCREEN:
 				break;
 		}
 	}
