@@ -5,7 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 
 public class SoundAction extends RunnableAction {
-    Sound sound;//
+    Sound sound;
     Long id;
     public SoundAction(Sound music){
         this.sound= music;

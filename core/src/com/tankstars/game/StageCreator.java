@@ -3,6 +3,7 @@ package com.tankstars.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.tankstars.game.Actions.SoundAction;
 import com.tankstars.game.Actors.ButtonActor;
 
 public class StageCreator {
@@ -29,6 +31,8 @@ public class StageCreator {
         mux.addProcessor(stage);
         //Image logo = new Image(new Sprite(new Texture(Gdx.files.internal("MainMenu/logo.png"))));
         ButtonActor logo = new ButtonActor("MainMenu/logo.png",150,100,100,50);
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal("tempsound1.mp3"));
+        logo.setAction(new SoundAction(sound));
         //logo.setScaling(new Scaling() {
 
         Image background = new Image(new Sprite(new Texture(Gdx.files.internal("badlogic.jpg"))));
