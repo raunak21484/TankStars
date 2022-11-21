@@ -30,7 +30,7 @@ public class TankStars extends ApplicationAdapter {
 	public void create () {
 		stageCreator = new StageCreator();
 		stages = new ArrayList<>();
-		stages.add(stageCreator.initLoadingScreen(3));
+		stages.add(stageCreator.initLoadingScreen());
 		currStage = LOADING_SCREEN;
 		bool = false;
 		Timer.schedule(new Timer.Task(){
@@ -59,6 +59,7 @@ public class TankStars extends ApplicationAdapter {
 				}
 				break;
 			case MAIN_MENU:
+
 				break;
 		}
 	}
