@@ -7,27 +7,30 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.tankstars.game.Actions.SoundAction;
 
 public class Logo extends Image {
+    Texture texture;
     Sound sound;
     long id;
     boolean isPressed = false;
     public Logo(int width, int height, int x, int y){
         super(new Texture(Gdx.files.internal("MainMenu/logo.png")));
+        this.setX(x);this.setY(y);this.setWidth(width);
         setBounds(x,y,width,height);
+        setTouchable(Touchable.enabled);
         sound = Gdx.audio.newSound(Gdx.files.internal("tempsound1.mp3"));
 
         addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(button == Input.Buttons.LEFT) {
-                    if (!isPressed) {
-                        isPressed = true;
-                        id = sound.play();
-
-                    }
+                if(button == Input.Buttons.LEFT && !isPressed) {
+                   isPressed= true;
+                    SoundAction sa = new SoundAction(sound);
+                    Logo.this.addAction(sa);
                 }
                 return true;
             }
