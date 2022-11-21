@@ -4,7 +4,7 @@ package com.tankstars.game.Actions;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 
-public class SoundAction extends RunnableAction {
+public class SoundAction extends RunnableAction{
     Sound sound;
     Long id;
     public SoundAction(Sound music){
@@ -19,4 +19,5 @@ public class SoundAction extends RunnableAction {
             }
         });
     }
+
 }
