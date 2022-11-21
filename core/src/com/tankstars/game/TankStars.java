@@ -22,14 +22,15 @@ public class TankStars extends ApplicationAdapter {
 	private final int MAIN_MENU = 1;
 	private final int LOADING_SCREEN = 0;
 	private int currStage;
+	StageCreator stageCreator;
 	private ArrayList<Stage> stages;
 	private Boolean bool;
 	private Actor tempActor;
 	@Override
 	public void create () {
-
+		stageCreator = new StageCreator();
 		stages = new ArrayList<>();
-		stages.add(new Stage(new ScreenViewport()));
+		stages.add(stageCreator.initLoadingScreen(bool,3));
 		currStage = LOADING_SCREEN;
 		Gdx.input.setInputProcessor(stages.get(currStage));
 		Image img = new Image(new Sprite(new Texture(Gdx.files.internal("MainMenu/loadingscreen.png"))));
@@ -52,14 +53,14 @@ public class TankStars extends ApplicationAdapter {
 		stages.get(currStage).draw();
 		switch(currStage){
 			case LOADING_SCREEN:
-				if(bool == true){
+				if(bool){
 					tempActor =stages.get(currStage).getActors().first();
 					tempActor.setColor(tempActor.getColor().r,tempActor.getColor().g,tempActor.getColor().b,tempActor.getColor().a-0.05f);
 					if(tempActor.getColor().a<=0){
 						stages.add(new Stage(new ScreenViewport()));
 						currStage = MAIN_MENU;
+					}
 				}
-			}
 				break;
 			case MAIN_MENU:
 				break;
