@@ -31,10 +31,12 @@ public class StageCreator {
         Stage stage = new Stage(new ScreenViewport());
         mux.addProcessor(stage);
         ButtonActor background = new ButtonActor("MainMenu/LeftBackground.jpg",1183,887,0,0);
-        ButtonActor logo = new ButtonActor("MainMenu/logo.png",250,150,1500,400);
+        ButtonActor buttonbackground = new ButtonActor("MainMenu/ButtonBackground.png",737,887,1183,0);
+        ButtonActor logo = new ButtonActor("MainMenu/logo.png",307,152,456,625);
         Sound sound = Gdx.audio.newSound(Gdx.files.internal("tempsound1.mp3"));
         logo.setAction(new SoundAction(sound));
         stage.addActor(background);
+        stage.addActor(buttonbackground);
         stage.addActor(logo);
 
         return stage;
