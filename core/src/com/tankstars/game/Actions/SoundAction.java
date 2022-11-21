@@ -14,6 +14,7 @@ public class SoundAction extends RunnableAction {
         this.setRunnable(new Runnable() {
             @Override
             public void run() {
+                System.out.println("Sound playing");
                SoundAction.this.id = SoundAction.this.sound.play();
             }
         });

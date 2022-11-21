@@ -41,13 +41,13 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		stages.add(stageCreator.initLoadingScreen(mux));
 		currStage = LOADING_SCREEN;
 		bool = false;
-		Gdx.input.setInputProcessor(mux);
+		Gdx.input.setInputProcessor(this);
 		Timer.schedule(new Timer.Task(){
 			@Override
 			public void run(){
 				bool = true;
 			}
-		},3);
+		},1);
 
 	}
 
@@ -101,9 +101,13 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		coord = this.stages.get(currStage).screenToStageCoordinates(new Vector2((float) screenX, (float) screenY));
 		Actor hitActor = this.stages.get(currStage).hit(coord.x, coord.y, false);
+		if(hitActor!=null){
+			System.out.println("Some actor has been hit!");
+		}
 		if(hitActor instanceof ButtonActor){
 			ButtonActor button1 = (ButtonActor) hitActor;
-			button1.setAction(button1.getButtonAction());
+			button1.addAction(button1.getButtonAction());
+			System.out.println("ACTION PERFORMED!!");
 		}
 		return false;
 	}
