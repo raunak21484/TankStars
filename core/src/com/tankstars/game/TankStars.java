@@ -2,11 +2,13 @@ package com.tankstars.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.tankstars.game.Actors.ButtonActor;
 
 import java.util.ArrayList;
 
@@ -27,13 +30,18 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	private ArrayList<Stage> stages;
 	private Boolean bool;
 	private Actor tempActor;
+	private Vector2 coord;
+	InputMultiplexer mux;
 	@Override
 	public void create () {
+		mux	= new InputMultiplexer();
+		mux.addProcessor(this);
 		stageCreator = new StageCreator();
 		stages = new ArrayList<>();
-		stages.add(stageCreator.initLoadingScreen());
+		stages.add(stageCreator.initLoadingScreen(mux));
 		currStage = LOADING_SCREEN;
 		bool = false;
+		Gdx.input.setInputProcessor(mux);
 		Timer.schedule(new Timer.Task(){
 			@Override
 			public void run(){
@@ -56,7 +64,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 					tempActor =stages.get(currStage).getActors().first();
 					tempActor.setColor(tempActor.getColor().r,tempActor.getColor().g,tempActor.getColor().b,tempActor.getColor().a-0.05f);
 					if(tempActor.getColor().a<=0){
-						stages.add(stageCreator.initMainMenu());
+						stages.add(stageCreator.initMainMenu(mux));
 						currStage = MAIN_MENU;
 					}
 				}
@@ -91,6 +99,11 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		coord = this.stages.get(currStage).screenToStageCoordinates(new Vector2((float) screenX, (float) screenY));
+		Actor hitActor = this.stages.get(currStage).hit(coord.x, coord.y, false);
+		if(hitActor instanceof ButtonActor){
+
+		}
 		return false;
 	}
 
