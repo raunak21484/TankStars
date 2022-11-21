@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -21,6 +23,8 @@ public class TankStars extends ApplicationAdapter {
 	private final int LOADING_SCREEN = 0;
 	private int currStage;
 	private ArrayList<Stage> stages;
+	private Boolean bool;
+	private Actor tempActor;
 	@Override
 	public void create () {
 
@@ -31,6 +35,13 @@ public class TankStars extends ApplicationAdapter {
 		Image img = new Image(new Sprite(new Texture(Gdx.files.internal("MainMenu/loadingscreen.png"))));
 		img.setSize(1920,887);
 		stages.get(currStage).addActor(img);
+		bool = false;
+		Timer.schedule(new Timer.Task(){
+			@Override
+			public void run(){
+					bool = true;
+			}
+		},3);
 
 	}
 
@@ -41,7 +52,14 @@ public class TankStars extends ApplicationAdapter {
 		stages.get(currStage).draw();
 		switch(currStage){
 			case LOADING_SCREEN:
-
+				if(bool == true){
+					tempActor =stages.get(currStage).getActors().first();
+					tempActor.setColor(tempActor.getColor().r,tempActor.getColor().g,tempActor.getColor().b,tempActor.getColor().a-0.05f);
+					if(tempActor.getColor().a<=0){
+						stages.add(new Stage(new ScreenViewport()));
+						currStage = MAIN_MENU;
+				}
+			}
 				break;
 			case MAIN_MENU:
 				break;
