@@ -30,7 +30,7 @@ public class StageCreator {
         Stage stage = new Stage(new ScreenViewport());
         mux.addProcessor(stage);
         //Image logo = new Image(new Sprite(new Texture(Gdx.files.internal("MainMenu/logo.png"))));
-        ButtonActor logo = new ButtonActor("MainMenu/logo.png",150,100,100,50);
+        ButtonActor logo = new ButtonActor("MainMenu/logo.png",250,150,500,400);
         Sound sound = Gdx.audio.newSound(Gdx.files.internal("tempsound1.mp3"));
         logo.setAction(new SoundAction(sound));
         //logo.setScaling(new Scaling() {
