@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tankstars.game.Actors.ButtonActor;
+import com.tankstars.game.utils.MutableInt;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 	public static final int MAIN_MENU = 1;
 	public static final int LOADING_SCREEN = 0;
-	private Integer currStage;
+	private MutableInt currStage;
 	StageCreator stageCreator;
 	private ArrayList<Stage> stages;
 	private Boolean bool;
@@ -40,7 +41,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		stageCreator = new StageCreator();
 		stages = new ArrayList<>();
 		stages.add(stageCreator.initLoadingScreen(mux));
-		currStage = LOADING_SCREEN;
+		currStage= new MutableInt(LOADING_SCREEN);
 		bool = false;
 		Gdx.input.setInputProcessor(mux);
 		Timer.schedule(new Timer.Task(){
@@ -54,19 +55,19 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public void render () {
-		stages.get(currStage).act(Gdx.graphics.getDeltaTime());
+		stages.get(currStage.val).act(Gdx.graphics.getDeltaTime());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stages.get(currStage).draw();
+		stages.get(currStage.val).draw();
 
 
-		switch(currStage){
+		switch(currStage.val){
 			case LOADING_SCREEN:
 				if(bool){
-					tempActor =stages.get(currStage).getActors().first();
+					tempActor =stages.get(currStage.val).getActors().first();
 					tempActor.setColor(tempActor.getColor().r,tempActor.getColor().g,tempActor.getColor().b,tempActor.getColor().a-0.05f);
 					if(tempActor.getColor().a<=0){
 						stages.add(stageCreator.initMainMenu(mux));
-						currStage = MAIN_MENU;
+						currStage.val = MAIN_MENU;
 					}
 				}
 				break;
@@ -100,8 +101,8 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		coord = this.stages.get(currStage).screenToStageCoordinates(new Vector2((float) screenX, (float) screenY));
-		Actor hitActor = this.stages.get(currStage).hit(coord.x, coord.y, false);
+		coord = this.stages.get(currStage.val).screenToStageCoordinates(new Vector2((float) screenX, (float) screenY));
+		Actor hitActor = this.stages.get(currStage.val).hit(coord.x, coord.y, false);
 		if(hitActor instanceof ButtonActor){
 			ButtonActor button1 = (ButtonActor) hitActor;
 			button1.performAction();
