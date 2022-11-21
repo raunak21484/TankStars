@@ -16,6 +16,7 @@ import com.tankstars.game.Actions.SoundAction;
 import com.tankstars.game.Actors.ButtonActor;
 
 public class StageCreator {
+
     public Stage initLoadingScreen(InputMultiplexer mux){
         Stage stage = new Stage(new ScreenViewport());
         mux.removeProcessor(mux.size()-1);

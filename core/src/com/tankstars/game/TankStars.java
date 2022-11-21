@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 public class TankStars extends ApplicationAdapter implements InputProcessor {
 
-	private final int MAIN_MENU = 1;
-	private final int LOADING_SCREEN = 0;
+	public static final int MAIN_MENU = 1;
+	public static final int LOADING_SCREEN = 0;
 	private Integer currStage;
 	StageCreator stageCreator;
 	private ArrayList<Stage> stages;
