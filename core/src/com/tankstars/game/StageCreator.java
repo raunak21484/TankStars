@@ -73,7 +73,11 @@ public class StageCreator {
         mux.removeProcessor(mux.size()-1);
         Stage stage = new Stage(new ScreenViewport());
         mux.addProcessor(stage);
-
+        Image buttonbackground = new Image(new Texture(Gdx.files.internal("MainMenu/ButtonBackground.png")));
+        buttonbackground.setBounds(1183,0,737,887);
+        ButtonActor startbutton = new ButtonActor("SelectionMenu/Start.png",486,180,1300,150);
+        stage.addActor(buttonbackground);
+        stage.addActor(startbutton);
         return stage;
     }
 
