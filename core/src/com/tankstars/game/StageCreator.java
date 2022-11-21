@@ -51,10 +51,9 @@ public class StageCreator {
         background.setBounds(0,0,1183,887);
         Image buttonbackground = new Image(new Texture(Gdx.files.internal("MainMenu/ButtonBackground.png")));
         buttonbackground.setBounds(1183,0,737,887);
+        ButtonActor tank = new ButtonActor("MainMenu/Tank.png",(int)(754/1.5),(int)(438/1.5),385,220);
         ButtonActor playbutton = new ButtonActor("MainMenu/Play.png",(int)(584/1.5),(int)(204/1.5),1350,600);
         playbutton.setAction(new StageSwitchAction(this,mux,TankStars.SELECTION_SCREEN,currStage));
-
-
         ButtonActor loadbutton = new ButtonActor("MainMenu/Load.png",(int)(584/1.5),(int)(204/1.5),1350,350);
         ButtonActor exitbutton = new ButtonActor("MainMenu/Exit.png",(int)(584/1.5),(int)(204/1.5),1350,100);
         ButtonActor logo = new ButtonActor("MainMenu/logo.png",307,152,456,625);
@@ -65,6 +64,7 @@ public class StageCreator {
         stage.addActor(playbutton);
         stage.addActor(loadbutton);
         stage.addActor(exitbutton);
+        stage.addActor(tank);
         stage.addActor(logo);
 
         return stage;
