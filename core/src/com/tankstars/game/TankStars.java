@@ -105,7 +105,8 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		Actor hitActor = this.stages.get(currStage.val).hit(coord.x, coord.y, false);
 		if(hitActor instanceof ButtonActor){
 			ButtonActor button1 = (ButtonActor) hitActor;
-			button1.performAction();
+			if(button1.getButtonAction()!=null){
+			button1.performAction();}
 		}
 		return true;
 	}
