@@ -30,17 +30,13 @@ public class TankStars extends ApplicationAdapter {
 	public void create () {
 		stageCreator = new StageCreator();
 		stages = new ArrayList<>();
-		stages.add(stageCreator.initLoadingScreen(bool,3));
+		stages.add(stageCreator.initLoadingScreen(3));
 		currStage = LOADING_SCREEN;
-		Gdx.input.setInputProcessor(stages.get(currStage));
-		Image img = new Image(new Sprite(new Texture(Gdx.files.internal("MainMenu/loadingscreen.png"))));
-		img.setSize(1920,887);
-		stages.get(currStage).addActor(img);
 		bool = false;
 		Timer.schedule(new Timer.Task(){
 			@Override
 			public void run(){
-					bool = true;
+				bool = true;
 			}
 		},3);
 
@@ -57,7 +53,7 @@ public class TankStars extends ApplicationAdapter {
 					tempActor =stages.get(currStage).getActors().first();
 					tempActor.setColor(tempActor.getColor().r,tempActor.getColor().g,tempActor.getColor().b,tempActor.getColor().a-0.05f);
 					if(tempActor.getColor().a<=0){
-						stages.add(new Stage(new ScreenViewport()));
+						stages.add(stageCreator.initMainMenu());
 						currStage = MAIN_MENU;
 					}
 				}
