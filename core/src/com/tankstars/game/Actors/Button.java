@@ -12,12 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.tankstars.game.Actions.SoundAction;
 
-public class Logo extends Image {
+public class Button extends Image {
     Texture texture;
     Sound sound;
     long id;
     boolean isPressed = false;
-    public Logo(int width, int height, int x, int y){
+    public Button(int width, int height, int x, int y){
         super(new Texture(Gdx.files.internal("MainMenu/logo.png")));
         this.setX(x);this.setY(y);this.setWidth(width);
         setBounds(x,y,width,height);
@@ -30,7 +30,7 @@ public class Logo extends Image {
                 if(button == Input.Buttons.LEFT && !isPressed) {
                    isPressed= true;
                     SoundAction sa = new SoundAction(sound);
-                    Logo.this.addAction(sa);
+                    Button.this.addAction(sa);
                 }
                 return true;
             }
