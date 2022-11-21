@@ -106,7 +106,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 			button1.performAction();
 			System.out.println("ACTION PERFORMED!!");
 		}
-		return false;
+		return true;
 	}
 
 	@Override
