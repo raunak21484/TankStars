@@ -2,6 +2,7 @@ package com.tankstars.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,11 +28,14 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	private ArrayList<Stage> stages;
 	private Boolean bool;
 	private Actor tempActor;
+	InputMultiplexer mux;
 	@Override
 	public void create () {
+		mux	= new InputMultiplexer(mux);
+		mux.addProcessor(this);
 		stageCreator = new StageCreator();
 		stages = new ArrayList<>();
-		stages.add(stageCreator.initLoadingScreen());
+		stages.add(stageCreator.initLoadingScreen(mux));
 		currStage = LOADING_SCREEN;
 		bool = false;
 		Timer.schedule(new Timer.Task(){
@@ -56,7 +60,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 					tempActor =stages.get(currStage).getActors().first();
 					tempActor.setColor(tempActor.getColor().r,tempActor.getColor().g,tempActor.getColor().b,tempActor.getColor().a-0.05f);
 					if(tempActor.getColor().a<=0){
-						stages.add(stageCreator.initMainMenu());
+						stages.add(stageCreator.initMainMenu(mux));
 						currStage = MAIN_MENU;
 					}
 				}
