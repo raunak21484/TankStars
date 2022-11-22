@@ -5,7 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tankstars.game.Actions.SoundAction;
 import com.tankstars.game.Actions.StageSwitchAction;
 import com.tankstars.game.Actors.ButtonActor;
+import com.tankstars.game.Actors.ImageAnimation;
 import com.tankstars.game.utils.MutableInt;
 
 public class StageCreator {
@@ -52,7 +56,7 @@ public class StageCreator {
         Image buttonbackground = new Image(new Texture(Gdx.files.internal("MainMenu/ButtonBackground.png")));
         buttonbackground.setBounds(1183,0,737,887);
         ButtonActor playbutton = new ButtonActor("MainMenu/Play.png",(int)(584/1.5),(int)(204/1.5),1350,600);
-        playbutton.setAction(new StageSwitchAction(this,mux,TankStars.SELECTION_SCREEN,currStage));
+        playbutton.setAction(new StageSwitchAction(this,mux,TankStars.SELECTION_SCREEN,currStage,false));
 
 
         ButtonActor loadbutton = new ButtonActor("MainMenu/Load.png",(int)(584/1.5),(int)(204/1.5),1350,350);
@@ -69,15 +73,25 @@ public class StageCreator {
 
         return stage;
     }
+
     public Stage initSelectionScreen(InputMultiplexer mux){
+        System.out.println("HERE");
         mux.removeProcessor(mux.size()-1);
         Stage stage = new Stage(new ScreenViewport());
         mux.addProcessor(stage);
         Image buttonbackground = new Image(new Texture(Gdx.files.internal("MainMenu/ButtonBackground.png")));
         buttonbackground.setBounds(1183,0,737,887);
         ButtonActor startbutton = new ButtonActor("SelectionMenu/Start.png",486,180,1300,150);
+        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas"));
+        Animation<TextureRegion> ani =  new Animation<TextureRegion>(0.033f, textureAtlas.findRegions("imageout"), Animation.PlayMode.LOOP);
+        ImageAnimation animation = new ImageAnimation();
+        animation.setPose(new TextureRegion(new Texture(Gdx.files.internal("badlogic.jpg")),1183,887));
+        animation.setAnimation(ani);
+
+        animation.setBounds(0,0,1183,887);
         stage.addActor(buttonbackground);
         stage.addActor(startbutton);
+        stage.addActor(animation);
         return stage;
     }
 

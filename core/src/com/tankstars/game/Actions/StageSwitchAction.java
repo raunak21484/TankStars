@@ -12,7 +12,8 @@ public class StageSwitchAction extends RunnableAction {
     private MutableInt currStage;
     private StageCreator stageCreator;
     private InputMultiplexer mux;
-    public StageSwitchAction(StageCreator stageCreator, InputMultiplexer mux, int toSwitch, MutableInt currstage){
+    private boolean createNew;
+    public StageSwitchAction(StageCreator stageCreator, InputMultiplexer mux, int toSwitch, MutableInt currstage, boolean createNew){
         this.toSwitch = toSwitch;
         this.currStage= currstage;
         this.stageCreator = stageCreator;
@@ -20,8 +21,10 @@ public class StageSwitchAction extends RunnableAction {
         setRunnable(new Runnable() {
             @Override
             public void run() {
+
                 StageSwitchAction.this.currStage.val = StageSwitchAction.this.toSwitch;
-                StageSwitchAction.this.stageCreator.IndexedInit(StageSwitchAction.this.currStage.val,StageSwitchAction.this.mux);
+                if(StageSwitchAction.this.createNew){
+                StageSwitchAction.this.stageCreator.IndexedInit(StageSwitchAction.this.currStage.val,StageSwitchAction.this.mux);}
             }
         });
     }

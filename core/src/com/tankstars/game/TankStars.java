@@ -78,6 +78,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 				break;
 			case SELECTION_SCREEN:
+				//stages.get(SELECTION_SCREEN).getActors().get(2).
 				break;
 		}
 	}
