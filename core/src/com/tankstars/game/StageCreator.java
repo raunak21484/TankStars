@@ -115,6 +115,6 @@ public class StageCreator {
         mux.removeProcessor(mux.size()-1);
         mux.addProcessor(stages.get(currStage.val));
         ImageAnimation ac = (ImageAnimation) stages.get(currStage.val).getActors().get(2);
-        ac.playTill(1f);
+        ac.play();
     }
 }

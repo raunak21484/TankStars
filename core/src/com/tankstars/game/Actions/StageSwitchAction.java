@@ -31,7 +31,7 @@ public class StageSwitchAction extends RunnableAction {
                 if(StageSwitchAction.this.createNew){
                 StageSwitchAction.this.stageCreator.IndexedInit(StageSwitchAction.this.currStage.val,StageSwitchAction.this.mux);}
                 if(StageSwitchAction.this.LoadExisting){
-                    StageSwitchAction.this.stageCreator.LoadScreen(StageSwitchAction.this.currStage.val,StageSwitchAction.this.mux,StageSwitchAction.this.tankStars.getStages());
+                    StageSwitchAction.this.stageCreator.LoadScreen(StageSwitchAction.this.currStage.val,StageSwitchAction.this.mux);
                 }
             }
         });
