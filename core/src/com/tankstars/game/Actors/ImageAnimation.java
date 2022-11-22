@@ -31,6 +31,7 @@ public class ImageAnimation extends Image implements Controller
     public void setAnimation(Animation<TextureRegion> animation) {
         this.animation = animation;
         animationLength = animation.getKeyFrames().length/animation.getFrameDuration();
+        System.out.println("AnimationLength: "+animationLength);
     }
 
     public void setPose(TextureRegion textureRegion) {
@@ -45,20 +46,23 @@ public class ImageAnimation extends Image implements Controller
     @Override
     public void act(float delta)
     {
-        time += delta * speed;
-        if(animation != null && animation.getAnimationDuration() > 0&& isPlayed){
+        if(isRewinding){time -= delta * speed;}
+        else{time += delta * speed;}
+        System.out.println("Time = "+time);
+        if(animation != null && animation.getAnimationDuration() > 0&& isPlayed && checkFrame(time)){
             TextureRegion frame = animation.getKeyFrame(time, true);
             drawable.setRegion(frame);
             setDrawable(drawable);
             invalidateHierarchy();
             invalidate();
         }else{
+            this.isPlayed = false;
             // setDrawable(null);
         }
         super.act(delta);
     }
     public boolean checkFrame(float frame){
-
+    //System.out.println("Animation Length: "+ animationLength);
         if(this.isFrameLimited){
             if(this.isRewinding){
                 if(frame%animationLength < this.limitFrame%animationLength){
@@ -86,7 +90,9 @@ public class ImageAnimation extends Image implements Controller
 
     @Override
     public void playTill(float frame) {
+        this.isPlayed = true;
         limitFrame = frame;
+        this.isFrameLimited =true;
     }
 
     @Override
