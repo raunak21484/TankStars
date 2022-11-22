@@ -19,7 +19,10 @@ import com.tankstars.game.Actions.SoundAction;
 import com.tankstars.game.Actions.StageSwitchAction;
 import com.tankstars.game.Actors.ButtonActor;
 import com.tankstars.game.Actors.ImageAnimation;
+import com.tankstars.game.utils.Controller;
 import com.tankstars.game.utils.MutableInt;
+
+import java.util.ArrayList;
 
 public class StageCreator {
     MutableInt currStage;
@@ -84,15 +87,20 @@ public class StageCreator {
         ButtonActor startbutton = new ButtonActor("SelectionMenu/Start.png",486,180,1300,150);
         TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas"));
         Animation<TextureRegion> ani =  new Animation<TextureRegion>(0.033f, textureAtlas.findRegions("imageout"), Animation.PlayMode.LOOP);
-        ImageAnimation animation = new ImageAnimation();
-        animation.setPose(new TextureRegion(new Texture(Gdx.files.internal("badlogic.jpg")),1183,887));
-        animation.setAnimation(ani);
+        ImageAnimation selectorAnimation = new ImageAnimation();
+        selectorAnimation.setPose(new TextureRegion(new Texture(Gdx.files.internal("badlogic.jpg")),1183,887));
+        selectorAnimation.setAnimation(ani);
 
-        animation.setBounds(0,0,1183,887);
+        selectorAnimation.setBounds(0,0,1183,887);
         stage.addActor(buttonbackground);
         stage.addActor(startbutton);
-        stage.addActor(animation);
+        stage.addActor(selectorAnimation);
         return stage;
     }
+    public void loadSelectionScreen(InputMultiplexer mux, ArrayList<Stage> stages){
+        this.currStage.val = TankStars.LOADING_SCREEN;
+        mux.removeProcessor(mux.size()-1);
+        mux.addProcessor(stages.get(currStage.val));
 
+    }
 }
