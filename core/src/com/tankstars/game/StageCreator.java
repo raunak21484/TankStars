@@ -102,11 +102,17 @@ public class StageCreator {
         ImageAnimation selectorAnimation = new ImageAnimation();
         selectorAnimation.setPose(new TextureRegion(new Texture(Gdx.files.internal("badlogic.jpg")),1183,887));
         selectorAnimation.setAnimation(ani);
-
         selectorAnimation.setBounds(0,0,1183,887);
+        ButtonActor right = new ButtonActor("SelectionMenu/Right.png",100,100,1780,500);
+        ButtonActor left = new ButtonActor("SelectionMenu/Left.png",100,100,1223,500);
+        Image first = new Image(new Texture(Gdx.files.internal("SelectionMenu/1st.png")));
+        first.setBounds((1780-1322)/2 - 225 + 1322,350,450,450);
         stage.addActor(buttonbackground);
         stage.addActor(startbutton);
         stage.addActor(selectorAnimation);
+        stage.addActor(right);
+        stage.addActor(left);
+        stage.addActor(first);
         return stage;
     }
     public void loadSelectionScreen(InputMultiplexer mux){
