@@ -26,8 +26,10 @@ import java.util.ArrayList;
 
 public class StageCreator {
     MutableInt currStage;
-    public StageCreator(MutableInt currStage){
+    TankStars tankStars;
+    public StageCreator(MutableInt currStage, TankStars tankStars){
         this.currStage = currStage;
+        this.tankStars = tankStars;
     }
     public Stage IndexedInit(int index, InputMultiplexer mux){
         switch(index){
@@ -39,6 +41,17 @@ public class StageCreator {
                 return this.initSelectionScreen(mux);
             default:
                 return null;
+        }
+    }
+    public void LoadScreen(int index, InputMultiplexer mux){
+        switch(index){
+//            case TankStars.LOADING_SCREEN:
+//                return this.initLoadingScreen(mux);
+//            case TankStars.MAIN_MENU:
+//                return this.initMainMenu(mux);
+            case TankStars.SELECTION_SCREEN:
+                this.loadSelectionScreen(mux);
+                break;
         }
     }
     public Stage initLoadingScreen(InputMultiplexer mux){
@@ -59,7 +72,7 @@ public class StageCreator {
         Image buttonbackground = new Image(new Texture(Gdx.files.internal("MainMenu/ButtonBackground.png")));
         buttonbackground.setBounds(1183,0,737,887);
         ButtonActor playbutton = new ButtonActor("MainMenu/Play.png",(int)(584/1.5),(int)(204/1.5),1350,600);
-        playbutton.setAction(new StageSwitchAction(this,mux,TankStars.SELECTION_SCREEN,currStage,false));
+        playbutton.setAction(new StageSwitchAction(this,mux,TankStars.SELECTION_SCREEN,currStage,this.tankStars,true,false));
 
 
         ButtonActor loadbutton = new ButtonActor("MainMenu/Load.png",(int)(584/1.5),(int)(204/1.5),1350,350);
@@ -97,10 +110,11 @@ public class StageCreator {
         stage.addActor(selectorAnimation);
         return stage;
     }
-    public void loadSelectionScreen(InputMultiplexer mux, ArrayList<Stage> stages){
-        this.currStage.val = TankStars.LOADING_SCREEN;
+    public void loadSelectionScreen(InputMultiplexer mux){
+        ArrayList<Stage> stages = this.tankStars.getStages();
         mux.removeProcessor(mux.size()-1);
         mux.addProcessor(stages.get(currStage.val));
-
+        ImageAnimation ac = (ImageAnimation) stages.get(currStage.val).getActors().get(2);
+        ac.playTill(1f);
     }
 }

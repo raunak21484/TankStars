@@ -31,6 +31,9 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	private MutableInt currStage;
 	StageCreator stageCreator;
 	private ArrayList<Stage> stages;
+
+
+
 	private Boolean bool;
 	private Actor tempActor;
 	private Vector2 coord;
@@ -41,7 +44,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		mux.addProcessor(this);
 		mux.addProcessor(this);
 		currStage= new MutableInt(LOADING_SCREEN);
-		stageCreator = new StageCreator(currStage);
+		stageCreator = new StageCreator(currStage,this);
 		stages = new ArrayList<>();
 		stages.add(stageCreator.initLoadingScreen(mux));
 		stages.add(stageCreator.initMainMenu(mux));
@@ -135,5 +138,8 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	@Override
 	public boolean scrolled(float amountX, float amountY) {
 		return false;
+	}
+	public ArrayList<Stage> getStages() {
+		return stages;
 	}
 }
