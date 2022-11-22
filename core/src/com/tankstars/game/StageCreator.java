@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.tankstars.game.Actions.AnimationAction;
 import com.tankstars.game.Actions.SoundAction;
 import com.tankstars.game.Actions.StageSwitchAction;
 import com.tankstars.game.Actors.ButtonActor;
@@ -100,19 +101,26 @@ public class StageCreator {
         TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas"));
         Animation<TextureRegion> ani =  new Animation<TextureRegion>(0.033f, textureAtlas.findRegions("imageout"), Animation.PlayMode.LOOP);
         ImageAnimation selectorAnimation = new ImageAnimation();
+        selectorAnimation.getBreakPoints().add(1.54f);
+        selectorAnimation.getBreakPoints().add(4.5f);
+        selectorAnimation.getBreakPoints().add(7.37f);
+        selectorAnimation.getBreakPoints().add(11f);
+
         selectorAnimation.setPose(new TextureRegion(new Texture(Gdx.files.internal("badlogic.jpg")),1183,887));
         selectorAnimation.setAnimation(ani);
         selectorAnimation.setBounds(0,0,1183,887);
         ButtonActor right = new ButtonActor("SelectionMenu/Right.png",100,100,1780,500);
+        right.setAction(new AnimationAction(selectorAnimation,1));
         ButtonActor left = new ButtonActor("SelectionMenu/Left.png",100,100,1223,500);
+        left.setAction(new AnimationAction(selectorAnimation,-1));
         Image first = new Image(new Texture(Gdx.files.internal("SelectionMenu/1st.png")));
         first.setBounds((1780-1322)/2 - 225 + 1322,350,450,450);
         stage.addActor(buttonbackground);
         stage.addActor(startbutton);
         stage.addActor(selectorAnimation);
+        stage.addActor(first);
         stage.addActor(right);
         stage.addActor(left);
-        stage.addActor(first);
         return stage;
     }
     public void loadSelectionScreen(InputMultiplexer mux){
@@ -121,7 +129,7 @@ public class StageCreator {
         mux.removeProcessor(mux.size()-1);
         mux.addProcessor(stages.get(currStage.val));
         ImageAnimation ac = (ImageAnimation) stages.get(currStage.val).getActors().get(2);
-        //ac.playTill(0.68388814f);
-        ac.play();
+        ac.playTill(ac.getBreakPoints().get(0));
+
     }
 }
