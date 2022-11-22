@@ -91,7 +91,6 @@ public class StageCreator {
     }
 
     public Stage initSelectionScreen(InputMultiplexer mux){
-        System.out.println("HERE");
         mux.removeProcessor(mux.size()-1);
         Stage stage = new Stage(new ScreenViewport());
         mux.addProcessor(stage);
@@ -111,6 +110,7 @@ public class StageCreator {
         return stage;
     }
     public void loadSelectionScreen(InputMultiplexer mux){
+        System.out.println("here");
         ArrayList<Stage> stages = this.tankStars.getStages();
         mux.removeProcessor(mux.size()-1);
         mux.addProcessor(stages.get(currStage.val));
