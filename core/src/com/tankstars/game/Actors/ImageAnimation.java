@@ -34,7 +34,6 @@ public class ImageAnimation extends Image
     @Override
     public void act(float delta)
     {
-        System.out.println("here");
         time += delta * speed;
         if(animation != null && animation.getAnimationDuration() > 0){
             TextureRegion frame = animation.getKeyFrame(time, true);
