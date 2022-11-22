@@ -25,11 +25,12 @@ public class ImageAnimation extends Image implements Controller
         super();
         setDrawable(drawable);
         this.BreakPoints = new ArrayList<>();
-        animationLength = animation.getKeyFrames().length/animation.getFrameDuration();
+
     }
 
     public void setAnimation(Animation<TextureRegion> animation) {
         this.animation = animation;
+        animationLength = animation.getKeyFrames().length/animation.getFrameDuration();
     }
 
     public void setPose(TextureRegion textureRegion) {
