@@ -14,7 +14,7 @@ public class AnimationAction extends RunnableAction {
             public void run() {
                 ImageAnimation lia = AnimationAction.this.imageAnimation;
                 Integer lframeIndex = AnimationAction.this.delta + lia.getPlayIndex();
-                System.out.println("Called!, to_move_frameIndex:" + lframeIndex +", currFrameIndex: "+lia.getPlayIndex());
+                //System.out.println("Called!, to_move_frameIndex:" + lframeIndex +", currFrameIndex: "+lia.getPlayIndex());
                 if(lia.getBreakPoints().size() <= lframeIndex || lframeIndex<0){
                     return;
                 }
@@ -25,7 +25,7 @@ public class AnimationAction extends RunnableAction {
                 }
 
                 lia.setPlayIndex(lframeIndex);
-                System.out.println("Updated lia.frameindex to "+lframeIndex);
+                //System.out.println("Updated lia.frameindex to "+lframeIndex);
                 lia.playTill(lia.getBreakPoints().get(lframeIndex));
 
             }

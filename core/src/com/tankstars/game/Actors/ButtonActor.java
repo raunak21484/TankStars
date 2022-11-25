@@ -11,8 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class ButtonActor extends Image {
     Action action;
+    Texture texture;
     public ButtonActor(String path, int width, int height, int x, int y){
-        super(new Texture(Gdx.files.internal(path)));
+        //super(new Texture(Gdx.files.internal(path)));
+        texture = new Texture(Gdx.files.internal(path));
+        this.setDrawable(new TextureRegionDrawable(texture));
         this.setX(x);this.setY(y);this.setWidth(width);
         setBounds(x,y,width,height);
         setTouchable(Touchable.enabled);

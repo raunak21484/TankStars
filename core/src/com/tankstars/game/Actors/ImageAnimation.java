@@ -31,13 +31,13 @@ public class ImageAnimation extends Image implements Controller
         super();
         setDrawable(drawable);
         this.BreakPoints = new ArrayList<>();
-        System.out.println("Constructor called!");
+        //System.out.println("Constructor called!");
     }
 
     public void setAnimation(Animation<TextureRegion> animation) {
         this.animation = animation;
         animationLength = animation.getKeyFrames().length/animation.getFrameDuration();
-        System.out.println("AnimationLength: "+animationLength);
+        //System.out.println("AnimationLength: "+animationLength);
     }
 
     public void setPose(TextureRegion textureRegion) {
@@ -55,7 +55,7 @@ public class ImageAnimation extends Image implements Controller
         if(animation != null && animation.getAnimationDuration() > 0&& isPlayed && checkFrame(time)){
             if(isRewinding){time -= delta * speed;}
             else{time += delta * speed;}
-            System.out.println("Time = "+time%getAnimationLength() + "\t PlayIndex = "+getPlayIndex());
+            //System.out.println("Time = "+time%getAnimationLength() + "\t PlayIndex = "+getPlayIndex());
             TextureRegion frame = animation.getKeyFrame(time%getAnimationLength(), true);
             drawable.setRegion(frame);
             setDrawable(drawable);
