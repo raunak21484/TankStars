@@ -28,6 +28,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	public static final int MAIN_MENU = 1;
 	public static final int SELECTION_SCREEN = 2;
 
+	public static final int GAME_SCREEN = 3;
 	private MutableInt currStage;
 	StageCreator stageCreator;
 	private ArrayList<Stage> stages;
@@ -49,6 +50,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		stages.add(stageCreator.initLoadingScreen(mux));
 		stages.add(stageCreator.initMainMenu(mux));
 		stages.add(stageCreator.initSelectionScreen(mux));
+		stages.add(stageCreator.initGameScreen(mux));
 		bool = false;
 		Gdx.input.setInputProcessor(mux);
 		Timer.schedule(new Timer.Task(){
@@ -110,6 +112,8 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		System.out.println(screenX);
+		System.out.println(screenY);
 		coord = this.stages.get(currStage.val).screenToStageCoordinates(new Vector2((float) screenX, (float) screenY));
 		Actor hitActor = this.stages.get(currStage.val).hit(coord.x, coord.y, false);
 		if(hitActor instanceof ButtonActor){
