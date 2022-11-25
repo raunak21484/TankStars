@@ -114,8 +114,6 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		System.out.println(screenX);
-		System.out.println(screenY);
 		coord = this.stages.get(currStage.val).screenToStageCoordinates(new Vector2((float) screenX, (float) screenY));
 		Actor hitActor = this.stages.get(currStage.val).hit(coord.x, coord.y, false);
 		if(hitActor instanceof ButtonActor){
