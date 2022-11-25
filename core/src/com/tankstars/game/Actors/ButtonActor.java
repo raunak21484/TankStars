@@ -11,8 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class ButtonActor extends Image {
     Action action;
-    Texture texture;
-    boolean isPressed = false;
     public ButtonActor(String path, int width, int height, int x, int y){
         super(new Texture(Gdx.files.internal(path)));
         this.setX(x);this.setY(y);this.setWidth(width);

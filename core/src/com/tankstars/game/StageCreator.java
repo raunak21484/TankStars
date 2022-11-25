@@ -12,18 +12,22 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tankstars.game.Actions.AnimationAction;
 import com.tankstars.game.Actions.SoundAction;
 import com.tankstars.game.Actions.StageSwitchAction;
+import com.tankstars.game.Actions.SwitchImageAction;
 import com.tankstars.game.Actors.ButtonActor;
 import com.tankstars.game.Actors.ImageAnimation;
 import com.tankstars.game.utils.Controller;
 import com.tankstars.game.utils.MutableInt;
 
 import java.util.ArrayList;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
 
 public class StageCreator {
     MutableInt currStage;
@@ -118,7 +122,8 @@ public class StageCreator {
         selectorAnimation.setAnimation(ani);
         selectorAnimation.setBounds(0,0,1183,887);
         ButtonActor right = new ButtonActor("SelectionMenu/Right.png",100,100,1780,500);
-        right.setAction(new AnimationAction(selectorAnimation,1));
+        ParallelAction parallelAction = new ParallelAction(new AnimationAction(selectorAnimation,1), new SwitchImageAction(right,"badlogic.jpg"));
+        right.setAction(parallelAction);
         ButtonActor left = new ButtonActor("SelectionMenu/Left.png",100,100,1223,500);
         left.setAction(new AnimationAction(selectorAnimation,-1));
         Image first = new Image(new Texture(Gdx.files.internal("SelectionMenu/1st.png")));
