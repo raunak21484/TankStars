@@ -44,6 +44,8 @@ public class StageCreator {
                 return this.initGameScreen(mux);
             case TankStars.SETTINGS:
                 return this.initSettings(mux);
+            case TankStars.LOAD_SCREEN:
+                return this.initLoadScreen(mux);
             default:
                 return null;
         }
@@ -81,6 +83,7 @@ public class StageCreator {
         ButtonActor playbutton = new ButtonActor("MainMenu/Play.png",(int)(584/1.5),(int)(204/1.5),1350,600);
         playbutton.setAction(new StageSwitchAction(this,mux,TankStars.SELECTION_SCREEN,currStage,this.tankStars,true,false));
         ButtonActor loadbutton = new ButtonActor("MainMenu/Load.png",(int)(584/1.5),(int)(204/1.5),1350,350);
+        loadbutton.setAction(new StageSwitchAction(this,mux,TankStars.LOAD_SCREEN,currStage,this.tankStars,true,false));
         ButtonActor exitbutton = new ButtonActor("MainMenu/Exit.png",(int)(584/1.5),(int)(204/1.5),1350,100);
         ButtonActor logo = new ButtonActor("MainMenu/logo.png",307,152,456,625);
         Sound sound = Gdx.audio.newSound(Gdx.files.internal("tempsound1.mp3"));
@@ -123,6 +126,7 @@ public class StageCreator {
         Image choose = new Image(new Texture(Gdx.files.internal("SelectionMenu/Choose.png")));
         choose.setBounds(1385,800,330,46);
         ButtonActor back = new ButtonActor("SelectionMenu/back.png",65,47,0,787);
+        back.setAction(new StageSwitchAction(this,mux,TankStars.MAIN_MENU,currStage,this.tankStars,true,false));
         stage.addActor(buttonbackground);
         stage.addActor(startbutton);
         stage.addActor(selectorAnimation);
@@ -201,6 +205,44 @@ public class StageCreator {
         stage.addActor(sound);
         stage.addActor(vibrations);
         stage.addActor(menu);
+        return stage;
+    }
+
+    public Stage initLoadScreen(InputMultiplexer mux){
+        Stage stage = new Stage(new ScreenViewport());
+        mux.removeProcessor(mux.size()-1);
+        mux.addProcessor(stage);
+        Image background = new Image(new Texture(Gdx.files.internal("LoadScreen/background.png")));
+        background.setBounds(0,0,1920,887);
+        ButtonActor g1 = new ButtonActor("LoadScreen/game1.png",391,234,200,250);
+        g1.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        ButtonActor g2 = new ButtonActor("LoadScreen/game2.png",391,234,750,250);
+        g2.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        ButtonActor g3 = new ButtonActor("LoadScreen/game3.png",391,234,1300,250);
+        g3.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        ButtonActor back = new ButtonActor("SelectionMenu/back.png",65,47,0,787);
+        back.setAction(new StageSwitchAction(this,mux,TankStars.MAIN_MENU,currStage,this.tankStars,true,false));
+        stage.addActor(background);
+        stage.addActor(g1);
+        stage.addActor(g2);
+        stage.addActor(g3);
+        stage.addActor(back);
+        return stage;
+    }
+
+    public Stage initEndingScreen(InputMultiplexer mux){
+        Stage stage = new Stage(new ScreenViewport());
+        mux.removeProcessor(mux.size()-1);
+        mux.addProcessor(stage);
+        Image background = new Image(new Texture(Gdx.files.internal("MainMenu/LeftBackground.jpg")));
+        background.setBounds(0,0,1183,887);
+        Image tank = new Image(new Texture(Gdx.files.internal("MainMenu/Tank.png")));
+        tank.setBounds(320,220,603,350);
+        Image buttonbackground = new Image(new Texture(Gdx.files.internal("MainMenu/ButtonBackground.png")));
+        buttonbackground.setBounds(1183,0,737,887);
+        stage.addActor(background);
+        stage.addActor(tank);
+        stage.addActor(buttonbackground);
         return stage;
     }
 }
