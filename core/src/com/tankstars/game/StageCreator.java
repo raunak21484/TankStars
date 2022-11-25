@@ -23,6 +23,7 @@ import com.tankstars.game.Actions.SwitchImageAction;
 import com.tankstars.game.Actors.ButtonActor;
 import com.tankstars.game.Actors.ImageAnimation;
 import com.tankstars.game.utils.Controller;
+import com.tankstars.game.utils.ImageNavCollection;
 import com.tankstars.game.utils.MutableInt;
 
 import java.util.ArrayList;
@@ -121,13 +122,23 @@ public class StageCreator {
         selectorAnimation.setPose(new TextureRegion(new Texture(Gdx.files.internal("badlogic.jpg")),1183,887));
         selectorAnimation.setAnimation(ani);
         selectorAnimation.setBounds(0,0,1183,887);
-        ButtonActor right = new ButtonActor("SelectionMenu/Right.png",100,100,1780,500);
-        ParallelAction parallelAction = new ParallelAction(new AnimationAction(selectorAnimation,1), new SwitchImageAction(right,"badlogic.jpg"));
-        right.setAction(parallelAction);
-        ButtonActor left = new ButtonActor("SelectionMenu/Left.png",100,100,1223,500);
-        left.setAction(new AnimationAction(selectorAnimation,-1));
+
         Image first = new Image(new Texture(Gdx.files.internal("SelectionMenu/1st.png")));
         first.setBounds((1780-1322)/2 - 225 + 1322,350,450,450);
+        ArrayList<String> imagecollection = new ArrayList<>();
+        imagecollection.add("SelectionMenu/1st.png");
+        imagecollection.add("SelectionMenu/2nd.png");
+        imagecollection.add("SelectionMenu/3rd.png");
+        imagecollection.add("SelectionMenu/4th.png");
+        ImageNavCollection images = new ImageNavCollection(imagecollection,new MutableInt(0));
+        ButtonActor right = new ButtonActor("SelectionMenu/Right.png",100,100,1780,500);
+        right.setAction(new ParallelAction(new AnimationAction(selectorAnimation,1), new SwitchImageAction(first,images,1)));
+
+
+        ButtonActor left = new ButtonActor("SelectionMenu/Left.png",100,100,1223,500);
+        left.setAction(new ParallelAction(new AnimationAction(selectorAnimation,-1), new SwitchImageAction(first,images,-1)));
+
+
         Image choose = new Image(new Texture(Gdx.files.internal("SelectionMenu/Choose.png")));
         choose.setBounds(1385,800,330,46);
         ButtonActor back = new ButtonActor("SelectionMenu/back.png",65,47,0,787);

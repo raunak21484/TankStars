@@ -7,17 +7,21 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.tankstars.game.utils.ImageNavCollection;
 
 public class SwitchImageAction extends RunnableAction {
     private Image image;
-    private String path;
-    public SwitchImageAction(Image image, String path){
+    private ImageNavCollection imcollection;
+    private Integer delta;
+    public SwitchImageAction(Image image, ImageNavCollection imcollection, Integer delta){
         this.image = image;
-        this.path = path;
+        this.imcollection = imcollection;
+        this.delta = delta;
         setRunnable(new Runnable() {
             @Override
             public void run() {
-                SwitchImageAction.this.image.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal(SwitchImageAction.this.path))));
+                SwitchImageAction.this.imcollection.setIndex(SwitchImageAction.this.imcollection.getIndex().val+SwitchImageAction.this.delta);
+                SwitchImageAction.this.image.setDrawable(new TextureRegionDrawable(new Texture(Gdx.files.internal(SwitchImageAction.this.imcollection.getPath()))));
                 //System.out.println("hii pressed!");
             }
         });
