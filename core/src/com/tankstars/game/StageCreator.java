@@ -51,6 +51,8 @@ public class StageCreator {
                 return this.initSettings(mux);
             case TankStars.LOAD_SCREEN:
                 return this.initLoadScreen(mux);
+            case TankStars.END_SCREEN:
+                return this.initEndingScreen(mux);
             default:
                 return null;
         }
@@ -177,6 +179,7 @@ public class StageCreator {
         ButtonActor setting = new ButtonActor("GameScreen/setting.png",65,47,0,787);
         setting.setAction(new StageSwitchAction(this,mux,TankStars.SETTINGS,currStage,this.tankStars,true,false));
         ButtonActor forward = new ButtonActor("GameScreen/forward.png",65,47,1920-67,787);
+        forward.setAction(new StageSwitchAction(this,mux,TankStars.END_SCREEN,currStage,this.tankStars,true,false));
         stage.addActor(background);
         stage.addActor(terrain);
         stage.addActor(tank1);
@@ -256,9 +259,17 @@ public class StageCreator {
         tank.setBounds(320,220,603,350);
         Image buttonbackground = new Image(new Texture(Gdx.files.internal("MainMenu/ButtonBackground.png")));
         buttonbackground.setBounds(1183,0,737,887);
+        ButtonActor logo = new ButtonActor("EndScreen/victory.png",413,118,456-40,645);
+        ButtonActor restart = new ButtonActor("EndScreen/restart.png",584,204,1350-100,500);
+        restart.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        ButtonActor menu = new ButtonActor("EndScreen/menu.png",584,204,1350-100,200);
+        menu.setAction(new StageSwitchAction(this,mux,TankStars.MAIN_MENU,currStage,this.tankStars,true,false));
         stage.addActor(background);
         stage.addActor(tank);
         stage.addActor(buttonbackground);
+        stage.addActor(logo);
+        stage.addActor(restart);
+        stage.addActor(menu);
         return stage;
     }
 }

@@ -30,6 +30,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	public static final int GAME_SCREEN = 3;
 	public static final int SETTINGS = 4;
 	public static final int LOAD_SCREEN = 5;
+	public static final int END_SCREEN = 6;
 	private MutableInt currStage;
 	StageCreator stageCreator;
 	private ArrayList<Stage> stages;
@@ -51,6 +52,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		stages.add(stageCreator.initGameScreen(mux));
 		stages.add(stageCreator.initSettings(mux));
 		stages.add(stageCreator.initLoadScreen(mux));
+		stages.add(stageCreator.initEndingScreen(mux));
 		bool = false;
 		Gdx.input.setInputProcessor(mux);
 		Timer.schedule(new Timer.Task(){
