@@ -64,7 +64,7 @@ public class ImageAnimation extends Image implements Controller
         if(animation != null && animation.getAnimationDuration() > 0&& isPlayed && checkFrame(time)){
             if(isRewinding){time -= delta * speed;}
             else{time += delta * speed;}
-            System.out.println("Time = "+time%getAnimationLength() + "\t PlayIndex = "+getPlayIndex());
+            //System.out.println("Time = "+time%getAnimationLength() + "\t PlayIndex = "+getPlayIndex());
             TextureRegion frame = animation.getKeyFrame(time%getAnimationLength(), true);
             Sprite sprite = new Sprite(frame);
             drawable.setSprite(sprite);

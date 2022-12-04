@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tankstars.game.Actors.ButtonActor;
+import com.tankstars.game.Actors.ImageAnimation;
 import com.tankstars.game.utils.MutableInt;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	private Actor tempActor;
 	private Vector2 coord;
 	private AssetManager assetManager;
+	private ImageAnimation loadingScreen;
 	InputMultiplexer mux;
 	@Override
 	public void create () {
@@ -50,35 +52,15 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		currStage= new MutableInt(LOADING_SCREEN);
 		stageCreator = new StageCreator(currStage,this);
 		stages = new ArrayList<>();
-		stageCreator.loadAssets(assetManager);
-//		while(!assetManager.isFinished()){
-//			System.out.println("Percentage finished: "+assetManager.getProgress());
-//			assetManager.update();
-//			try {
-//				Thread.sleep(100);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
 		stages.add(stageCreator.initLoadingScreen(mux));
-		stages.add(stageCreator.initMainMenu(mux));
-		stages.add(stageCreator.initSelectionScreen(mux));
-		stages.add(stageCreator.initGameScreen(mux));
-		stages.add(stageCreator.initSettings(mux));
-		stages.add(stageCreator.initLoadScreen(mux));
+		loadingScreen = (ImageAnimation) stages.get(LOADING_SCREEN).getActors().get(1);
+		stageCreator.loadAssets(assetManager);
 
-
-		stages.add(stageCreator.initEndingScreen(mux));
 		bool = false;
 		Gdx.input.setInputProcessor(mux);
 		//Actor temp = stages.get(0).getActors().get(1);
 		//temp.setColor(temp.getColor().r,temp.getColor().g,temp.getColor().b,0);
-		Timer.schedule(new Timer.Task(){
-			@Override
-			public void run(){
-				TankStars.this.bool = true;
-			}
-		},3);
+
 
 	}
 
@@ -91,10 +73,30 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 		switch(currStage.val){
 			case LOADING_SCREEN:
+				if(!assetManager.isFinished()){
+					System.out.println("Percentage finished: "+assetManager.getProgress());
+					assetManager.update();
+					this.loadingScreen.playTill(this.loadingScreen.getBreakPoints().get(((int)((float)(this.loadingScreen.getBreakPoints().size()-1)*(float)assetManager.getProgress()))));
+				}else{
+					this.loadingScreen.setColor(loadingScreen.getColor().r,loadingScreen.getColor().g,loadingScreen.getColor().b,0);
+					Timer.schedule(new Timer.Task(){
+						@Override
+						public void run(){
+							TankStars.this.bool = true;
+						}
+					},1);
+				}
 				if(bool){
 					tempActor =stages.get(currStage.val).getActors().first();
 					tempActor.setColor(tempActor.getColor().r,tempActor.getColor().g,tempActor.getColor().b,tempActor.getColor().a-0.05f);
 					if(tempActor.getColor().a<=0){
+
+						stages.add(stageCreator.initMainMenu(mux));
+						stages.add(stageCreator.initSelectionScreen(mux));
+						stages.add(stageCreator.initGameScreen(mux));
+						stages.add(stageCreator.initSettings(mux));
+						stages.add(stageCreator.initLoadScreen(mux));
+						stages.add(stageCreator.initEndingScreen(mux));
 						currStage.val = MAIN_MENU;
 					}
 				}

@@ -300,11 +300,11 @@ public class StageCreator {
         assetManager.load("MainMenu/LeftBackground.jpg",Texture.class);
         assetManager.load("MainMenu/Tank.png",Texture.class);
         assetManager.load("MainMenu/ButtonBackground.png",Texture.class);
-        assetManager.load("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas",TextureAtlas.class);
         assetManager.load("MainMenu/ButtonBackground.png",Texture.class);
         assetManager.load("SelectionMenu/1st.png", Texture.class);
         assetManager.load("SelectionMenu/Choose.png",Texture.class);
         assetManager.load("GameScreen/theme1.png", Texture.class);
+        assetManager.load("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas",TextureAtlas.class);
         assetManager.load("GameScreen/terrain.png", Texture.class);
         assetManager.load("GameScreen/bar.png", Texture.class);
         assetManager.load("LoadScreen/background.png",Texture.class);
