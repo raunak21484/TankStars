@@ -52,15 +52,19 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		stages.add(stageCreator.initGameScreen(mux));
 		stages.add(stageCreator.initSettings(mux));
 		stages.add(stageCreator.initLoadScreen(mux));
+
+
 		stages.add(stageCreator.initEndingScreen(mux));
 		bool = false;
 		Gdx.input.setInputProcessor(mux);
+		//Actor temp = stages.get(0).getActors().get(1);
+		//temp.setColor(temp.getColor().r,temp.getColor().g,temp.getColor().b,0);
 		Timer.schedule(new Timer.Task(){
 			@Override
 			public void run(){
-				bool = true;
+				TankStars.this.bool = true;
 			}
-		},1);
+		},3);
 
 	}
 

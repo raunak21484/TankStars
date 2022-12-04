@@ -71,13 +71,30 @@ public class StageCreator {
         mux.addProcessor(stage);
         Image img = new Image(new Sprite(new Texture(Gdx.files.internal("MainMenu/loadingscreen.png"))));
         img.setSize(1920,887);
+        TextureAtlas loadingAtlas = new TextureAtlas(Gdx.files.internal("MainMenu/LoadingBar/loadingbar.atlas"));
+        Animation<TextureRegion> loadAnimation = new Animation<TextureRegion>(0.033f,loadingAtlas.findRegions("imageout"),Animation.PlayMode.LOOP);
+
+        ImageAnimation loadingBar = new ImageAnimation();
+        loadingBar.setPose(new TextureRegion(new Texture(Gdx.files.internal("transparent.png")),0,0));
+        loadingBar.setAnimation(loadAnimation);
+        loadingBar.setBounds(100,100,300,80);
+        loadingBar.setScale(4,5);
+        for(int i=0;i<1000;i++){
+            loadingBar.getBreakPoints().add((float) (loadingBar.getAnimationLength()*0.8 * ((float)i)/((float)1000)));
+        }
+
         stage.addActor(img);
+        stage.addActor(loadingBar);
+        loadingBar.play();
         return stage;
     }
     public Stage initMainMenu(InputMultiplexer mux){
+        System.out.println("a");
         mux.removeProcessor(mux.size()-1);
         Stage stage = new Stage(new ScreenViewport());
+        System.out.println("b");
         mux.addProcessor(stage);
+        System.out.println("c");
         Image background = new Image(new Texture(Gdx.files.internal("MainMenu/LeftBackground.jpg")));
         background.setBounds(0,0,1183,887);
         Image tank = new Image(new Texture(Gdx.files.internal("MainMenu/Tank.png")));
@@ -93,6 +110,7 @@ public class StageCreator {
         ButtonActor logo = new ButtonActor("MainMenu/logo.png",307,152,456,625);
         Sound sound = Gdx.audio.newSound(Gdx.files.internal("tempsound1.mp3"));
         logo.setAction(new SoundAction(sound));
+
         stage.addActor(background);
         stage.addActor(tank);
         stage.addActor(buttonbackground);

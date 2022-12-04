@@ -1,8 +1,12 @@
 package com.tankstars.game.Actors;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.tankstars.game.utils.Controller;
 
@@ -19,29 +23,34 @@ public class ImageAnimation extends Image implements Controller
     private float limitFrame;
 
     private float animationLength;
+    private float scaleX;
 
+//
+
+    private float scaleY;
     protected float speed = 1f;
     protected boolean isPlayed =false;
     private int PlayIndex= 0;
 
 
-    protected TextureRegionDrawable drawable = new TextureRegionDrawable();
+    protected SpriteDrawable drawable = new SpriteDrawable();
 
     public ImageAnimation() {
         super();
         setDrawable(drawable);
         this.BreakPoints = new ArrayList<>();
-        //System.out.println("Constructor called!");
+
     }
 
     public void setAnimation(Animation<TextureRegion> animation) {
         this.animation = animation;
-        animationLength = animation.getKeyFrames().length/animation.getFrameDuration();
+        animationLength = animation.getKeyFrames().length*animation.getFrameDuration();
         //System.out.println("AnimationLength: "+animationLength);
     }
 
     public void setPose(TextureRegion textureRegion) {
-        drawable.setRegion(textureRegion);
+
+        drawable.setSprite(new Sprite(textureRegion));
         setDrawable(drawable);
         invalidateHierarchy();
         setSize(getPrefWidth(), getPrefHeight());
@@ -55,9 +64,10 @@ public class ImageAnimation extends Image implements Controller
         if(animation != null && animation.getAnimationDuration() > 0&& isPlayed && checkFrame(time)){
             if(isRewinding){time -= delta * speed;}
             else{time += delta * speed;}
-            //System.out.println("Time = "+time%getAnimationLength() + "\t PlayIndex = "+getPlayIndex());
+            System.out.println("Time = "+time%getAnimationLength() + "\t PlayIndex = "+getPlayIndex());
             TextureRegion frame = animation.getKeyFrame(time%getAnimationLength(), true);
-            drawable.setRegion(frame);
+            Sprite sprite = new Sprite(frame);
+            drawable.setSprite(sprite);
             setDrawable(drawable);
             invalidateHierarchy();
             invalidate();
