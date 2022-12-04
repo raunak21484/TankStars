@@ -149,7 +149,7 @@ public class StageCreator {
         selectorAnimation.setAnimation(ani);
         selectorAnimation.setBounds(0,0,1183,887);
 
-        Image first = new Image(new Texture(Gdx.files.internal("SelectionMenu/1st.png")));
+        Image first = new Image(tankStars.getAssetManager().get("SelectionMenu/1st.png",Texture.class));
         first.setBounds((1780-1322)/2 - 225 + 1322,350,450,450);
         ArrayList<String> imagecollection = new ArrayList<>();
         imagecollection.add("SelectionMenu/1st.png");
@@ -165,7 +165,7 @@ public class StageCreator {
         left.setAction(new ParallelAction(new AnimationAction(selectorAnimation,-1), new SwitchImageAction(first,images,-1)));
 
 
-        Image choose = new Image(new Texture(Gdx.files.internal("SelectionMenu/Choose.png")));
+        Image choose = new Image(tankStars.getAssetManager().get("SelectionMenu/Choose.png",Texture.class));
         choose.setBounds(1385,800,330,46);
         ButtonActor back = new ButtonActor("SelectionMenu/back.png",65,47,0,787);
         back.setAction(new StageSwitchAction(this,mux,TankStars.MAIN_MENU,currStage,this.tankStars,true,false));
@@ -192,13 +192,13 @@ public class StageCreator {
         Stage stage = new Stage(new ScreenViewport());
         mux.removeProcessor(mux.size()-1);
         mux.addProcessor(stage);
-        Image background = new Image(new Texture(Gdx.files.internal("GameScreen/theme1.png")));
+        Image background = new Image(tankStars.getAssetManager().get("GameScreen/theme1.png", Texture.class));
         background.setBounds(0,0,1920,887);
-        Image terrain = new Image(new Texture(Gdx.files.internal("GameScreen/terrain.png")));
+        Image terrain = new Image(tankStars.getAssetManager().get("GameScreen/terrain.png", Texture.class));
         terrain.setBounds(0,0,1920,600);
         ButtonActor tank1 = new ButtonActor("GameScreen/tank1.png",167,86,1150,887-687);
         ButtonActor tank2 = new ButtonActor("GameScreen/tank2.png",188,106,298,887-581);
-        Image bar = new Image(new Texture(Gdx.files.internal("GameScreen/bar.png")));
+        Image bar = new Image(tankStars.getAssetManager().get("GameScreen/bar.png", Texture.class));
         bar.setBounds((1920/2)-480,800,960,93);
         ButtonActor setting = new ButtonActor("GameScreen/setting.png",65,47,0,787);
         setting.setAction(new StageSwitchAction(this,mux,TankStars.SETTINGS,currStage,this.tankStars,true,false));
@@ -220,13 +220,13 @@ public class StageCreator {
         mux.addProcessor(stage);
         ButtonActor background = new ButtonActor("Settings/background.png",1920,887,0,0);
         background.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
-        Image back = new Image(new Texture(Gdx.files.internal("GameScreen/theme1.png")));
+        Image back = new Image(tankStars.getAssetManager().get("GameScreen/theme1.png", Texture.class));
         background.setBounds(0,0,1920,887);
-        Image terrain = new Image(new Texture(Gdx.files.internal("GameScreen/terrain.png")));
+        Image terrain = new Image(tankStars.getAssetManager().get("GameScreen/terrain.png", Texture.class));
         terrain.setBounds(0,0,1920,600);
         ButtonActor tank1 = new ButtonActor("GameScreen/tank1.png",167,86,1150,887-687);
         ButtonActor tank2 = new ButtonActor("GameScreen/tank2.png",188,106,298,887-581);
-        Image bar = new Image(new Texture(Gdx.files.internal("GameScreen/bar.png")));
+        Image bar = new Image(tankStars.getAssetManager().get("GameScreen/bar.png", Texture.class));
         bar.setBounds((1920/2)-480,800,960,93);
         ButtonActor setting = new ButtonActor("GameScreen/setting.png",65,47,0,787);
         ButtonActor forward = new ButtonActor("GameScreen/forward.png",65,47,1920-67,787);
@@ -255,7 +255,7 @@ public class StageCreator {
         Stage stage = new Stage(new ScreenViewport());
         mux.removeProcessor(mux.size()-1);
         mux.addProcessor(stage);
-        Image background = new Image(new Texture(Gdx.files.internal("LoadScreen/background.png")));
+        Image background = new Image(tankStars.getAssetManager().get("LoadScreen/background.png",Texture.class));
         background.setBounds(0,0,1920,887);
         ButtonActor g1 = new ButtonActor("LoadScreen/game1.png",391,234,200,250);
         g1.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
@@ -277,11 +277,11 @@ public class StageCreator {
         Stage stage = new Stage(new ScreenViewport());
         mux.removeProcessor(mux.size()-1);
         mux.addProcessor(stage);
-        Image background = new Image(new Texture(Gdx.files.internal("MainMenu/LeftBackground.jpg")));
+        Image background = new Image(tankStars.getAssetManager().get("MainMenu/LeftBackground.jpg",Texture.class));
         background.setBounds(0,0,1183,887);
-        Image tank = new Image(new Texture(Gdx.files.internal("MainMenu/Tank.png")));
+        Image tank = new Image(tankStars.getAssetManager().get("MainMenu/Tank.png",Texture.class));
         tank.setBounds(320,220,603,350);
-        Image buttonbackground = new Image(new Texture(Gdx.files.internal("MainMenu/ButtonBackground.png")));
+        Image buttonbackground = new Image(tankStars.getAssetManager().get("MainMenu/ButtonBackground.png",Texture.class));
         buttonbackground.setBounds(1183,0,737,887);
         ButtonActor logo = new ButtonActor("EndScreen/victory.png",413,118,456-40,645);
         ButtonActor restart = new ButtonActor("EndScreen/restart.png",584,204,1350-100,500);
@@ -302,5 +302,11 @@ public class StageCreator {
         assetManager.load("MainMenu/ButtonBackground.png",Texture.class);
         assetManager.load("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas",TextureAtlas.class);
         assetManager.load("MainMenu/ButtonBackground.png",Texture.class);
+        assetManager.load("SelectionMenu/1st.png", Texture.class);
+        assetManager.load("SelectionMenu/Choose.png",Texture.class);
+        assetManager.load("GameScreen/theme1.png", Texture.class);
+        assetManager.load("GameScreen/terrain.png", Texture.class);
+        assetManager.load("GameScreen/bar.png", Texture.class);
+        assetManager.load("LoadScreen/background.png",Texture.class);
     }
 }
