@@ -25,7 +25,7 @@ public class ButtonActor extends Image {
         this.setDrawable(new TextureRegionDrawable(texture));
         this.setX(x);this.setY(y);this.setWidth(width);
         setBounds(x,y,width,height);
-        setTouchable(Touchable.enabled);
+        setTouchable(Touchable.enabled);//
     }
     public void setAction(Action action){
         this.action = action;
