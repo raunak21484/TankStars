@@ -3,8 +3,10 @@ package com.tankstars.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -69,9 +71,12 @@ public class StageCreator {
         Stage stage = new Stage(new ScreenViewport());
         mux.removeProcessor(mux.size()-1);
         mux.addProcessor(stage);
-        Image img = new Image(new Sprite(new Texture(Gdx.files.internal("MainMenu/loadingscreen.png"))));
+        this.tankStars.getAssetManager().load("MainMenu/loadingscreen.png",Texture.class);
+        this.tankStars.getAssetManager().load("MainMenu/LoadingBar/loadingbar.atlas",TextureAtlas.class);
+        tankStars.getAssetManager().finishLoading();
+        Image img = new Image(new Sprite( tankStars.getAssetManager().get("MainMenu/loadingscreen.png",Texture.class)));
         img.setSize(1920,887);
-        TextureAtlas loadingAtlas = new TextureAtlas(Gdx.files.internal("MainMenu/LoadingBar/loadingbar.atlas"));
+        TextureAtlas loadingAtlas = this.tankStars.getAssetManager().get("MainMenu/LoadingBar/loadingbar.atlas",TextureAtlas.class);
         Animation<TextureRegion> loadAnimation = new Animation<TextureRegion>(0.033f,loadingAtlas.findRegions("imageout"),Animation.PlayMode.LOOP);
 
         ImageAnimation loadingBar = new ImageAnimation();
@@ -95,11 +100,11 @@ public class StageCreator {
         System.out.println("b");
         mux.addProcessor(stage);
         System.out.println("c");
-        Image background = new Image(new Texture(Gdx.files.internal("MainMenu/LeftBackground.jpg")));
+        Image background = new Image(tankStars.getAssetManager().get("MainMenu/LeftBackground.jpg",Texture.class));
         background.setBounds(0,0,1183,887);
-        Image tank = new Image(new Texture(Gdx.files.internal("MainMenu/Tank.png")));
+        Image tank = new Image(tankStars.getAssetManager().get("MainMenu/Tank.png",Texture.class));
         tank.setBounds(320,220,603,350);
-        Image buttonbackground = new Image(new Texture(Gdx.files.internal("MainMenu/ButtonBackground.png")));
+        Image buttonbackground = new Image(tankStars.getAssetManager().get("MainMenu/ButtonBackground.png",Texture.class));
         buttonbackground.setBounds(1183,0,737,887);
         ButtonActor playbutton = new ButtonActor("MainMenu/Play.png",(int)(584/1.5),(int)(204/1.5),1350,600);
         playbutton.setAction(new StageSwitchAction(this,mux,TankStars.SELECTION_SCREEN,currStage,this.tankStars,true,false));
@@ -130,8 +135,11 @@ public class StageCreator {
         buttonbackground.setBounds(1183,0,737,887);
         ButtonActor startbutton = new ButtonActor("SelectionMenu/Start.png",486,180,1300,150);
         startbutton.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
-        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas"));
+        //long t1 = System.currentTimeMillis();
+        TextureAtlas textureAtlas = tankStars.getAssetManager().get("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas",TextureAtlas.class);
+
         Animation<TextureRegion> ani =  new Animation<TextureRegion>(0.033f, textureAtlas.findRegions("imageout"), Animation.PlayMode.LOOP);
+        //System.out.println("Time taken = " + (System.currentTimeMillis() - t1));
         ImageAnimation selectorAnimation = new ImageAnimation();
         selectorAnimation.getBreakPoints().add(1.54f);
         selectorAnimation.getBreakPoints().add(4.5f);
@@ -287,5 +295,11 @@ public class StageCreator {
         stage.addActor(restart);
         stage.addActor(menu);
         return stage;
+    }
+    public void loadAssets(AssetManager assetManager){
+        assetManager.load("MainMenu/LeftBackground.jpg",Texture.class);
+        assetManager.load("MainMenu/Tank.png",Texture.class);
+        assetManager.load("MainMenu/ButtonBackground.png",Texture.class);
+        assetManager.load("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas",TextureAtlas.class);
     }
 }

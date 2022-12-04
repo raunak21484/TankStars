@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -37,15 +38,28 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	private Boolean bool;
 	private Actor tempActor;
 	private Vector2 coord;
+	private AssetManager assetManager;
 	InputMultiplexer mux;
 	@Override
 	public void create () {
 		mux	= new InputMultiplexer();
+		assetManager = new AssetManager();
+
 		mux.addProcessor(this);
 		mux.addProcessor(this);
 		currStage= new MutableInt(LOADING_SCREEN);
 		stageCreator = new StageCreator(currStage,this);
 		stages = new ArrayList<>();
+		stageCreator.loadAssets(assetManager);
+//		while(!assetManager.isFinished()){
+//			System.out.println("Percentage finished: "+assetManager.getProgress());
+//			assetManager.update();
+//			try {
+//				Thread.sleep(100);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		stages.add(stageCreator.initLoadingScreen(mux));
 		stages.add(stageCreator.initMainMenu(mux));
 		stages.add(stageCreator.initSelectionScreen(mux));
@@ -149,5 +163,13 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	}
 	public ArrayList<Stage> getStages() {
 		return stages;
+	}
+
+	public AssetManager getAssetManager() {
+		return assetManager;
+	}
+
+	public void setAssetManager(AssetManager assetManager) {
+		this.assetManager = assetManager;
 	}
 }
