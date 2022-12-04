@@ -131,7 +131,7 @@ public class StageCreator {
         mux.removeProcessor(mux.size()-1);
         Stage stage = new Stage(new ScreenViewport());
         mux.addProcessor(stage);
-        Image buttonbackground = new Image(new Texture(Gdx.files.internal("MainMenu/ButtonBackground.png")));
+        Image buttonbackground = new Image(tankStars.getAssetManager().get("MainMenu/ButtonBackground.png",Texture.class));
         buttonbackground.setBounds(1183,0,737,887);
         ButtonActor startbutton = new ButtonActor("SelectionMenu/Start.png",486,180,1300,150);
         startbutton.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
@@ -301,5 +301,6 @@ public class StageCreator {
         assetManager.load("MainMenu/Tank.png",Texture.class);
         assetManager.load("MainMenu/ButtonBackground.png",Texture.class);
         assetManager.load("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas",TextureAtlas.class);
+        assetManager.load("MainMenu/ButtonBackground.png",Texture.class);
     }
 }
