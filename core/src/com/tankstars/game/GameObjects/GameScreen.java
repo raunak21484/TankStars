@@ -15,11 +15,11 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.tankstars.game.TankStars;
 import com.tankstars.game.utils.InputController;
+import com.tankstars.game.utils.MutableInt;
 
 public class GameScreen implements Screen {
     private Stage GameStage;
     private SpriteBatch batch;
-    private Sprite sprite;
     private World world;
     private Box2DDebugRenderer debugRenderer;
     private Camera camera;
@@ -36,7 +36,6 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        sprite = new Sprite(assetManager.get("SelectionMenu/Choose.png",Texture.class));
         world = new World(new Vector2(0,-9.81f),true);
         debugRenderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera(Gdx.graphics.getWidth()/10f, Gdx.graphics.getHeight()/10f);
@@ -71,11 +70,10 @@ public class GameScreen implements Screen {
         wheelDef.restitution = 0.2f;
         wheelDef.friction = 20;
         wheelDef.density = 10;
-        tank = new Tank(world,chassisDef,wheelDef,2,10,5,2);
+        tank = new Tank(tankStars, world,chassisDef,wheelDef,2,10,5,2, new MutableInt(1));
         tankStars.getMux().addProcessor(tank);
         tankStars.getMux().addProcessor(new InputController(){
         });
-
         chainShape.dispose();
         circleShape.dispose();
     }
@@ -85,19 +83,21 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         debugRenderer.render(world,camera.combined);
-        batch.begin();
-        sprite.draw(batch);
-        batch.end();
+
         world.step(TIMESTEP, VELOCITYITERATIONS, POSITIONITERATIONS);
         if(tDelta != null){
             tDelta.sub(tank.getLeftWheel().getLinearVelocity());
-            System.out.println("Net Force on Left Wheel = "+new Vector2(tDelta.x*tank.getLeftWheel().getMass(),tDelta.y*tank.getLeftWheel().getMass()));
+            //System.out.println("Net Force on Left Wheel = "+new Vector2(tDelta.x*tank.getLeftWheel().getMass(),tDelta.y*tank.getLeftWheel().getMass()));
         }
         tDelta = new Vector2(tank.getLeftWheel().getLinearVelocity().x,tank.getLeftWheel().getLinearVelocity().y);
         camera.position.x = tank.getChassis().getPosition().x;
         camera.position.y = tank.getChassis().getPosition().y;
         camera.update();
         tank.cancelGravity();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        tank.render(batch);
+        batch.end();
     }
 
     @Override

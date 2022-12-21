@@ -201,8 +201,8 @@ public class StageCreator {
 //        System.out.println("Tankstars screen null? "+(tankStars.getScreen()==null));
 //        GameScreen gameScreen = new GameScreen(stage,tankStars);
 //        tankStars.setScreen(gameScreen);
-        stage.addActor(tank1);
-        stage.addActor(tank2);
+        //stage.addActor(tank1);
+        //stage.addActor(tank2);
         stage.addActor(bar);
         stage.addActor(setting);
         stage.addActor(forward);

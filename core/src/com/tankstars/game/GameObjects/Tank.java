@@ -2,6 +2,10 @@ package com.tankstars.game.GameObjects;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WheelJoint;
 import com.badlogic.gdx.physics.box2d.joints.WheelJointDef;
+import com.tankstars.game.TankStars;
+import com.tankstars.game.utils.MutableInt;
 
 import java.util.ArrayList;
 
@@ -23,16 +29,20 @@ public class Tank implements InputProcessor {
     private float MotorPower = 1;
     private float fuel = 1,fuelPerc = 100;
     private float health = 1,healthPerc = 100;
-    private static ArrayList<Float> MotorPowers = new ArrayList<Float>(){{add(0.6f);add(0.8f);add((1.2f));add(0.7f);}};
-    private static ArrayList<Float> Fuels = new ArrayList<Float>(){{add(0.5f);add(0.8f);add(1.2f);add(0.9f);}};
-    private static ArrayList<Float> Healths  = new ArrayList<Float>(){{add(1f);add(0.8f);add(0.5f);add(0.8f);}};
-    private static ArrayList<String> TankTextures = new ArrayList<String>(){{add("PlayableGame/TankAssets/tank1_body.png");add("PlayableGame/TankAssets/tank2_body.png");add("PlayableGame/TankAssets/tank3_body.png");add("PlayableGame/TankAssets/tank4_body.png");}};
-    private static ArrayList<String> MuzzleTextures = new ArrayList<String>(){{add("PlayableGame/TankAssets/tank1_nuzzle.png");add("PlayableGame/TankAssets/tank2_nuzzle.png");add("PlayableGame/TankAssets/tank3_nuzzle.png");add("PlayableGame/TankAssets/tank4_nuzzle.png");}};
+    public static ArrayList<Float> MotorPowers = new ArrayList<Float>(){{add(0.6f);add(0.8f);add((1.2f));add(0.7f);}};
+    public static ArrayList<Float> Fuels = new ArrayList<Float>(){{add(0.5f);add(0.8f);add(1.2f);add(0.9f);}};
+    public static ArrayList<Float> Healths  = new ArrayList<Float>(){{add(1f);add(0.8f);add(0.5f);add(0.8f);}};
+    public static ArrayList<String> TankTextures = new ArrayList<String>(){{add("PlayableGame/TankAssets/tank1_body.png");add("PlayableGame/TankAssets/tank2_body.png");add("PlayableGame/TankAssets/tank3_body.png");add("PlayableGame/TankAssets/tank4_body.png");}};
+    public static ArrayList<String> MuzzleTextures = new ArrayList<String>(){{add("PlayableGame/TankAssets/tank1_nuzzle.png");add("PlayableGame/TankAssets/tank2_nuzzle.png");add("PlayableGame/TankAssets/tank3_nuzzle.png");add("PlayableGame/TankAssets/tank4_nuzzle.png");}};
     private boolean Controlling;
+    private Sprite tankSprite, muzzleSprite;
     private World world;
-
-    public Tank(World world, FixtureDef chassisFixtureDef, FixtureDef wheelFixtureDef, float x, float y, float width, float height) {
+    private MutableInt tankCode;
+    public Tank(TankStars tankStars , World world, FixtureDef chassisFixtureDef, FixtureDef wheelFixtureDef, float x, float y, float width, float height, MutableInt tankCode) {
         this.world = world;
+        this.tankCode = tankCode;
+        this.tankSprite = new Sprite(tankStars.getAssetManager().get(TankTextures.get(tankCode.val), Texture.class));
+        this.muzzleSprite = new Sprite(tankStars.getAssetManager().get(MuzzleTextures.get(tankCode.val), Texture.class));
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DynamicBody;
         bodyDef.position.set(x, y);
@@ -40,22 +50,28 @@ public class Tank implements InputProcessor {
         // chassis
         PolygonShape chassisShape = new PolygonShape();
         chassisShape.set(new float[] {-width / 2, -height / 2, width / 2, -height / 2, width / 2 * .4f, height / 2, -width / 2 * .8f, height / 2 * .8f}); // counterclockwise order
-
+        tankSprite.setSize(width,height);
+        tankSprite.setOrigin(tankSprite.getWidth()/2,tankSprite.getHeight()/2);
 
         chassisFixtureDef.shape = chassisShape;
 
         chassis = world.createBody(bodyDef);
         chassis.createFixture(chassisFixtureDef);
-
+        chassis.setUserData(tankSprite);
         //Muzzle
         PolygonShape muzzleShape = new PolygonShape();
-        muzzleShape.setAsBox(width/8,height/8);
+        muzzleShape.setAsBox(width/5,height/6);
         BodyDef muzzleBodyDef = new BodyDef();
-        muzzleBodyDef.type = BodyType.KinematicBody;
-        muzzleBodyDef.position.set(x+width/4,y+width/4);
+        muzzleBodyDef.type = BodyType.DynamicBody;
+        muzzleBodyDef.position.set(x,y+width/6);
         muzzle = world.createBody(muzzleBodyDef);
         chassisFixtureDef.shape = muzzleShape;
         muzzle.createFixture(chassisFixtureDef);
+
+
+        muzzleSprite.setSize(width/5,height/6);
+        muzzleSprite.setOrigin(muzzleSprite.getWidth()/2,muzzleSprite.getHeight()/2);
+        muzzle.setUserData(muzzleSprite);
         // left wheel
         CircleShape wheelShape = new CircleShape();
         wheelShape.setRadius(height / 3f);
@@ -77,6 +93,7 @@ public class Tank implements InputProcessor {
         axisDef.frequencyHz = chassisFixtureDef.density;
         axisDef.localAxisA.set(Vector2.Y);
         axisDef.maxMotorTorque = chassisFixtureDef.density * 30;
+        System.out.println("MaxMotorTorque = "+axisDef.maxMotorTorque);
         leftAxis = (WheelJoint) world.createJoint(axisDef);
 
 
@@ -201,5 +218,19 @@ public class Tank implements InputProcessor {
     public Tank setFuel(float fuel){
         this.fuel = fuel;
         return this;
+    }
+    public void render(SpriteBatch batch){
+        if(this.tankSprite==null || this.muzzleSprite == null){
+            System.out.println("null");return;}
+
+        this.tankSprite.setPosition(chassis.getPosition().x - tankSprite.getWidth()/2,chassis.getPosition().y - tankSprite.getHeight()/2);
+        //System.out.println("Chassis position: "+chassis.getPosition()+ "TankSprite: "+ new Vector2(tankSprite.getWidth(),tankSprite.getHeight()));
+        this.tankSprite.setRotation(chassis.getAngle()* MathUtils.radiansToDegrees);
+        this.muzzleSprite.setPosition(muzzle.getPosition().x- muzzleSprite.getWidth(),muzzle.getPosition().y - muzzleSprite.getHeight());
+        this.muzzleSprite.setRotation(muzzle.getAngle()* MathUtils.radiansToDegrees);
+
+        this.tankSprite.draw(batch);
+        this.muzzleSprite.draw(batch);
+
     }
 }
