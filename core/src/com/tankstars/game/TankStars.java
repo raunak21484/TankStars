@@ -1,35 +1,24 @@
 package com.tankstars.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tankstars.game.Actors.ButtonActor;
 import com.tankstars.game.Actors.ImageAnimation;
 import com.tankstars.game.utils.MutableInt;
 
 import java.util.ArrayList;
 
-public class TankStars extends ApplicationAdapter implements InputProcessor {
+public class TankStars extends Game implements InputProcessor {
 
 	public static final int LOADING_SCREEN = 0;
 	public static final int MAIN_MENU = 1;
 	public static final int SELECTION_SCREEN = 2;
-	public static final int GAME_SCREEN = 3;
+	public static final int GAME_STAGE = 3;
 	public static final int SETTINGS = 4;
 	public static final int LOAD_SCREEN = 5;
 	public static final int END_SCREEN = 6;
@@ -41,9 +30,13 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	private Vector2 coord;
 	private AssetManager assetManager;
 	private ImageAnimation loadingScreen;
-	InputMultiplexer mux;
+
+
+
+	private InputMultiplexer mux;
 	@Override
 	public void create () {
+
 		mux	= new InputMultiplexer();
 		assetManager = new AssetManager();
 
@@ -66,15 +59,16 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public void render () {
-		stages.get(currStage.val).act(Gdx.graphics.getDeltaTime());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		super.render();
+		stages.get(currStage.val).act(Gdx.graphics.getDeltaTime());
+		stages.get(currStage.val).getViewport().setScreenSize(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		stages.get(currStage.val).draw();
-
 
 		switch(currStage.val){
 			case LOADING_SCREEN:
 				if(!assetManager.isFinished()){
-					System.out.println("Percentage finished: "+assetManager.getProgress());
+					System.out.println("Load Percentage: "+assetManager.getProgress()*100);
 					assetManager.update();
 					this.loadingScreen.playTill(this.loadingScreen.getBreakPoints().get(((int)((float)(this.loadingScreen.getBreakPoints().size()-1)*(float)assetManager.getProgress()))));
 				}else{
@@ -84,11 +78,11 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 						public void run(){
 							TankStars.this.bool = true;
 						}
-					},1);
+					},0.2f);
 				}
 				if(bool){
 					tempActor =stages.get(currStage.val).getActors().first();
-					tempActor.setColor(tempActor.getColor().r,tempActor.getColor().g,tempActor.getColor().b,tempActor.getColor().a-0.05f);
+					tempActor.setColor(tempActor.getColor().r,tempActor.getColor().g,tempActor.getColor().b,tempActor.getColor().a -0.05f);
 					if(tempActor.getColor().a<=0){
 
 						stages.add(stageCreator.initMainMenu(mux));
@@ -108,6 +102,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 				//stages.get(SELECTION_SCREEN).getActors().get(2).
 				break;
 		}
+
 	}
 	
 	@Override
@@ -115,6 +110,7 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 		for(int i=0;i<stages.size();i++){
 			stages.get(i).dispose();
 		}
+		super.dispose();
 	}
 
 	@Override
@@ -166,7 +162,9 @@ public class TankStars extends ApplicationAdapter implements InputProcessor {
 	public ArrayList<Stage> getStages() {
 		return stages;
 	}
-
+	public InputMultiplexer getMux() {
+		return mux;
+	}
 	public AssetManager getAssetManager() {
 		return assetManager;
 	}

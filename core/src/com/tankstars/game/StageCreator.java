@@ -1,27 +1,23 @@
 package com.tankstars.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tankstars.game.Actions.*;
 import com.tankstars.game.Actors.ButtonActor;
 import com.tankstars.game.Actors.ImageAnimation;
-import com.tankstars.game.utils.Controller;
+import com.tankstars.game.GameObjects.GameScreen;
+//import com.tankstars.game.GameObjects.Play;
 import com.tankstars.game.utils.ImageNavCollection;
 import com.tankstars.game.utils.MutableInt;
 
@@ -44,7 +40,7 @@ public class StageCreator {
                 return this.initMainMenu(mux);
             case TankStars.SELECTION_SCREEN:
                 return this.initSelectionScreen(mux);
-            case TankStars.GAME_SCREEN:
+            case TankStars.GAME_STAGE:
                 return this.initGameScreen(mux);
             case TankStars.SETTINGS:
                 return this.initSettings(mux);
@@ -82,7 +78,7 @@ public class StageCreator {
         ImageAnimation loadingBar = new ImageAnimation();
         loadingBar.setPose(new TextureRegion(new Texture(Gdx.files.internal("transparent.png")),0,0));
         loadingBar.setAnimation(loadAnimation);
-        loadingBar.setBounds(100,100,300,80);
+        loadingBar.setBounds(355,400,300,80);
         loadingBar.setScale(4,5);
         for(int i=0;i<1000;i++){
             loadingBar.getBreakPoints().add((float) (loadingBar.getAnimationLength()*0.8 * ((float)i)/((float)1000)));
@@ -94,12 +90,9 @@ public class StageCreator {
         return stage;
     }
     public Stage initMainMenu(InputMultiplexer mux){
-        System.out.println("a");
         mux.removeProcessor(mux.size()-1);
         Stage stage = new Stage(new ScreenViewport());
-        System.out.println("b");
         mux.addProcessor(stage);
-        System.out.println("c");
         Image background = new Image(tankStars.getAssetManager().get("MainMenu/LeftBackground.jpg",Texture.class));
         background.setBounds(0,0,1183,887);
         Image tank = new Image(tankStars.getAssetManager().get("MainMenu/Tank.png",Texture.class));
@@ -134,7 +127,7 @@ public class StageCreator {
         Image buttonbackground = new Image(tankStars.getAssetManager().get("MainMenu/ButtonBackground.png",Texture.class));
         buttonbackground.setBounds(1183,0,737,887);
         ButtonActor startbutton = new ButtonActor("SelectionMenu/Start.png",486,180,1300,150);
-        startbutton.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        startbutton.setAction(new ParallelAction(new StageSwitchAction(this,mux,TankStars.GAME_STAGE,currStage,this.tankStars,true,false), new ScreenSwitchAction(this.tankStars,new GameScreen(stage,this.tankStars))));
         //long t1 = System.currentTimeMillis();
         TextureAtlas textureAtlas = tankStars.getAssetManager().get("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas",TextureAtlas.class);
 
@@ -180,7 +173,6 @@ public class StageCreator {
         return stage;
     }
     public void loadSelectionScreen(InputMultiplexer mux){
-        System.out.println("here");
         ArrayList<Stage> stages = this.tankStars.getStages();
         mux.removeProcessor(mux.size()-1);
         mux.addProcessor(stages.get(currStage.val));
@@ -204,8 +196,11 @@ public class StageCreator {
         setting.setAction(new StageSwitchAction(this,mux,TankStars.SETTINGS,currStage,this.tankStars,true,false));
         ButtonActor forward = new ButtonActor("GameScreen/forward.png",65,47,1920-67,787);
         forward.setAction(new StageSwitchAction(this,mux,TankStars.END_SCREEN,currStage,this.tankStars,true,false));
-        stage.addActor(background);
-        stage.addActor(terrain);
+        //stage.addActor(background);
+        //stage.addActor(terrain);
+//        System.out.println("Tankstars screen null? "+(tankStars.getScreen()==null));
+//        GameScreen gameScreen = new GameScreen(stage,tankStars);
+//        tankStars.setScreen(gameScreen);
         stage.addActor(tank1);
         stage.addActor(tank2);
         stage.addActor(bar);
@@ -219,7 +214,7 @@ public class StageCreator {
         mux.removeProcessor(mux.size()-1);
         mux.addProcessor(stage);
         ButtonActor background = new ButtonActor("Settings/background.png",1920,887,0,0);
-        background.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        background.setAction(new StageSwitchAction(this,mux,TankStars.GAME_STAGE,currStage,this.tankStars,true,false));
         Image back = new Image(tankStars.getAssetManager().get("GameScreen/theme1.png", Texture.class));
         background.setBounds(0,0,1920,887);
         Image terrain = new Image(tankStars.getAssetManager().get("GameScreen/terrain.png", Texture.class));
@@ -231,11 +226,11 @@ public class StageCreator {
         ButtonActor setting = new ButtonActor("GameScreen/setting.png",65,47,0,787);
         ButtonActor forward = new ButtonActor("GameScreen/forward.png",65,47,1920-67,787);
         ButtonActor resume = new ButtonActor("Settings/resume.png",324,120,960-162-30,550);
-        resume.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        resume.setAction(new StageSwitchAction(this,mux,TankStars.GAME_STAGE,currStage,this.tankStars,true,false));
         ButtonActor sound = new ButtonActor("Settings/sound.png",324,120,960-162-30,400);
         ButtonActor vibrations = new ButtonActor("Settings/vibration.png",324,120,960-162-30,250);
         ButtonActor menu = new ButtonActor("Settings/mainmenu.png",324,120,960-162-30,100);
-        menu.setAction(new StageSwitchAction(this,mux,TankStars.MAIN_MENU,currStage,this.tankStars,true,false));
+        menu.setAction(new ParallelAction( new ScreenSwitchAction(tankStars,null),new StageSwitchAction(this,mux,TankStars.MAIN_MENU,currStage,this.tankStars,true,false)));
         stage.addActor(back);
         stage.addActor(terrain);
         stage.addActor(tank1);
@@ -258,11 +253,11 @@ public class StageCreator {
         Image background = new Image(tankStars.getAssetManager().get("LoadScreen/background.png",Texture.class));
         background.setBounds(0,0,1920,887);
         ButtonActor g1 = new ButtonActor("LoadScreen/game1.png",391,234,200,250);
-        g1.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        g1.setAction(new StageSwitchAction(this,mux,TankStars.GAME_STAGE,currStage,this.tankStars,true,false));
         ButtonActor g2 = new ButtonActor("LoadScreen/game2.png",391,234,750,250);
-        g2.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        g2.setAction(new StageSwitchAction(this,mux,TankStars.GAME_STAGE,currStage,this.tankStars,true,false));
         ButtonActor g3 = new ButtonActor("LoadScreen/game3.png",391,234,1300,250);
-        g3.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        g3.setAction(new StageSwitchAction(this,mux,TankStars.GAME_STAGE,currStage,this.tankStars,true,false));
         ButtonActor back = new ButtonActor("SelectionMenu/back.png",65,47,0,787);
         back.setAction(new StageSwitchAction(this,mux,TankStars.MAIN_MENU,currStage,this.tankStars,true,false));
         stage.addActor(background);
@@ -285,7 +280,7 @@ public class StageCreator {
         buttonbackground.setBounds(1183,0,737,887);
         ButtonActor logo = new ButtonActor("EndScreen/victory.png",413,118,456-40,645);
         ButtonActor restart = new ButtonActor("EndScreen/restart.png",584,204,1350-100,500);
-        restart.setAction(new StageSwitchAction(this,mux,TankStars.GAME_SCREEN,currStage,this.tankStars,true,false));
+        restart.setAction(new StageSwitchAction(this,mux,TankStars.GAME_STAGE,currStage,this.tankStars,true,false));
         ButtonActor menu = new ButtonActor("EndScreen/menu.png",584,204,1350-100,200);
         menu.setAction(new StageSwitchAction(this,mux,TankStars.MAIN_MENU,currStage,this.tankStars,true,false));
         stage.addActor(background);
@@ -308,5 +303,13 @@ public class StageCreator {
         assetManager.load("GameScreen/terrain.png", Texture.class);
         assetManager.load("GameScreen/bar.png", Texture.class);
         assetManager.load("LoadScreen/background.png",Texture.class);
+        assetManager.load("PlayableGame/TankAssets/tank1_body.png",Texture.class);
+        assetManager.load("PlayableGame/TankAssets/tank2_body.png",Texture.class);
+        assetManager.load("PlayableGame/TankAssets/tank3_body.png",Texture.class);
+        assetManager.load("PlayableGame/TankAssets/tank4_body.png",Texture.class);
+        assetManager.load("PlayableGame/TankAssets/tank1_nuzzle.png",Texture.class);
+        assetManager.load("PlayableGame/TankAssets/tank2_nuzzle.png",Texture.class);
+        assetManager.load("PlayableGame/TankAssets/tank3_nuzzle.png",Texture.class);
+        assetManager.load("PlayableGame/TankAssets/tank4_nuzzle.png",Texture.class);
     }
 }

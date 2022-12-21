@@ -1,5 +1,6 @@
 package com.tankstars.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.tankstars.game.TankStars;
@@ -11,6 +12,7 @@ public class DesktopLauncher {
 		config.setForegroundFPS(60);
 		config.setTitle("Tank Stars");
 		config.setWindowedMode(1920,887);
-		new Lwjgl3Application(new TankStars(), config);
+		Lwjgl3Application t = new Lwjgl3Application(new TankStars(), config);
+
 	}
 }
