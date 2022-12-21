@@ -11,10 +11,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tankstars.game.Actions.*;
 import com.tankstars.game.Actors.ButtonActor;
+import com.tankstars.game.Actors.CoordinatedButtonActor;
 import com.tankstars.game.Actors.ImageAnimation;
 import com.tankstars.game.GameObjects.GameScreen;
 //import com.tankstars.game.GameObjects.Play;
@@ -28,6 +30,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
 public class StageCreator {
     MutableInt currStage;
     TankStars tankStars;
+    private GameScreen gameScreen;
     public StageCreator(MutableInt currStage, TankStars tankStars){
         this.currStage = currStage;
         this.tankStars = tankStars;
@@ -127,7 +130,8 @@ public class StageCreator {
         Image buttonbackground = new Image(tankStars.getAssetManager().get("MainMenu/ButtonBackground.png",Texture.class));
         buttonbackground.setBounds(1183,0,737,887);
         ButtonActor startbutton = new ButtonActor("SelectionMenu/Start.png",486,180,1300,150);
-        startbutton.setAction(new ParallelAction(new StageSwitchAction(this,mux,TankStars.GAME_STAGE,currStage,this.tankStars,true,false), new ScreenSwitchAction(this.tankStars,new GameScreen(stage,this.tankStars))));
+        this.gameScreen = new GameScreen(stage,tankStars);
+        startbutton.setAction(new ParallelAction(new StageSwitchAction(this,mux,TankStars.GAME_STAGE,currStage,this.tankStars,true,false), new ScreenSwitchAction(this.tankStars,this.gameScreen)));
         //long t1 = System.currentTimeMillis();
         TextureAtlas textureAtlas = tankStars.getAssetManager().get("SelectionMenu/SpriteSheets/TankSelection/tanksel.atlas",TextureAtlas.class);
 
@@ -179,7 +183,8 @@ public class StageCreator {
         ImageAnimation ac = (ImageAnimation) stages.get(currStage.val).getActors().get(2);
         ac.playTill(ac.getBreakPoints().get(0));
     }
-
+    CoordinatedButtonActor shootCircle;
+    ButtonActor Fire;
     public Stage initGameScreen(InputMultiplexer mux){
         Stage stage = new Stage(new ScreenViewport());
         mux.removeProcessor(mux.size()-1);
@@ -196,6 +201,17 @@ public class StageCreator {
         setting.setAction(new StageSwitchAction(this,mux,TankStars.SETTINGS,currStage,this.tankStars,true,false));
         ButtonActor forward = new ButtonActor("GameScreen/forward.png",65,47,1920-67,787);
         forward.setAction(new StageSwitchAction(this,mux,TankStars.END_SCREEN,currStage,this.tankStars,true,false));
+        Image sector = new Image(tankStars.getAssetManager().get("GameScreen/sector.png",Texture.class));
+        Fire = new ButtonActor("GameScreen/fire.png",250,120,1500,30);
+        Fire.setAction(new FireProjectileAction(tankStars,this.gameScreen,0));
+        shootCircle = new CoordinatedButtonActor(this.gameScreen.getTank1(),sector,"GameScreen/blackcircle.png",500,500,0,0);
+        shootCircle.setColor(shootCircle.getColor().r,shootCircle.getColor().g,shootCircle.getColor().b,0.2f);
+
+        float hbw = 166/128;
+        sector.setBounds(250,250,160,200);
+//        sector.setRotation(-90);
+//        sector.setOrigin(250,250);
+
         //stage.addActor(background);
         //stage.addActor(terrain);
 //        System.out.println("Tankstars screen null? "+(tankStars.getScreen()==null));
@@ -203,6 +219,9 @@ public class StageCreator {
 //        tankStars.setScreen(gameScreen);
         //stage.addActor(tank1);
         //stage.addActor(tank2);
+        //stage.addActor(sector);
+        stage.addActor(Fire);
+        stage.addActor(shootCircle);
         stage.addActor(bar);
         stage.addActor(setting);
         stage.addActor(forward);
@@ -311,5 +330,12 @@ public class StageCreator {
         assetManager.load("PlayableGame/TankAssets/tank2_nuzzle.png",Texture.class);
         assetManager.load("PlayableGame/TankAssets/tank3_nuzzle.png",Texture.class);
         assetManager.load("PlayableGame/TankAssets/tank4_nuzzle.png",Texture.class);
+        assetManager.load("PlayableGame/ProjectileAssets/b1.png",Texture.class);
+        assetManager.load("PlayableGame/ProjectileAssets/b2.png",Texture.class);
+        assetManager.load("PlayableGame/ProjectileAssets/b3.png",Texture.class);
+        assetManager.load("GameScreen/sector.png",Texture.class);
+    }
+    public CoordinatedButtonActor getShootCircle(){
+        return this.shootCircle;
     }
 }

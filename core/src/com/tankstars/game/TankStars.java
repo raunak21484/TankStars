@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Timer;
 import com.tankstars.game.Actors.ButtonActor;
+import com.tankstars.game.Actors.CoordinatedButtonActor;
 import com.tankstars.game.Actors.ImageAnimation;
 import com.tankstars.game.utils.MutableInt;
 
@@ -23,6 +24,9 @@ public class TankStars extends Game implements InputProcessor {
 	public static final int LOAD_SCREEN = 5;
 	public static final int END_SCREEN = 6;
 	private MutableInt currStage;
+
+
+
 	StageCreator stageCreator;
 	private ArrayList<Stage> stages;
 	private Boolean bool;
@@ -131,11 +135,17 @@ public class TankStars extends Game implements InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		coord = this.stages.get(currStage.val).screenToStageCoordinates(new Vector2((float) screenX, (float) screenY));
+		System.out.println("Hit position: "+coord );
 		Actor hitActor = this.stages.get(currStage.val).hit(coord.x, coord.y, false);
 		if(hitActor instanceof ButtonActor){
+			if(!(hitActor instanceof CoordinatedButtonActor)){
 			ButtonActor button1 = (ButtonActor) hitActor;
 			if(button1.getButtonAction()!=null){
-			button1.performAction();}
+			button1.performAction();}}else{
+				CoordinatedButtonActor actor = (CoordinatedButtonActor) hitActor;
+				actor.setHitLocation(coord.x, coord.y);
+				actor.performAction();
+			}
 		}
 		return true;
 	}
@@ -172,4 +182,9 @@ public class TankStars extends Game implements InputProcessor {
 	public void setAssetManager(AssetManager assetManager) {
 		this.assetManager = assetManager;
 	}
+	public StageCreator getStageCreator() {
+		return stageCreator;
+	}
+
+
 }
